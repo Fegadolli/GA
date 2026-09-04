@@ -3,414 +3,365 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PSA & RPPN — Apresentação do Grupo Mediador</title>
+<title>Gestão Ambiental — Dinâmica PSA/RPPN</title>
 <style>
-:root{
-  --bg:#0f1713;
-  --panel:#17221c;
-  --panel2:#1d2c24;
-  --text:#f5f7f5;
-  --muted:#b8c4bc;
-  --green:#70b88c;
-  --green2:#3d7f5c;
-  --cream:#f0eadf;
-  --gold:#d5b76d;
-  --red:#d37b7b;
-  --line:rgba(255,255,255,.12);
-  --shadow:0 18px 60px rgba(0,0,0,.28);
-}
-*{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.app{height:100%;display:flex;flex-direction:column}
-.topbar{
-  height:58px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 22px;border-bottom:1px solid var(--line);background:rgba(15,23,19,.96);z-index:20
-}
-.brand{display:flex;gap:10px;align-items:center;font-weight:800}
-.dot{width:12px;height:12px;border-radius:50%;background:var(--green)}
-.top-actions{display:flex;gap:8px;align-items:center}
-.icon-btn{
-  border:1px solid var(--line);background:transparent;color:var(--text);
-  border-radius:10px;padding:8px 11px
-}
-.icon-btn:hover{background:rgba(255,255,255,.06)}
-.progress{height:4px;background:#203028}
-.progress > div{height:100%;background:var(--green);width:0%;transition:.25s}
-.stage{flex:1;position:relative;overflow:hidden}
-.slide{
-  position:absolute;inset:0;padding:48px 6vw 86px;overflow:auto;
-  opacity:0;transform:translateX(24px);pointer-events:none;transition:.25s ease
-}
-.slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
-.slide-inner{max-width:1180px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center}
-.kicker{text-transform:uppercase;letter-spacing:.13em;color:var(--green);font-size:.82rem;font-weight:800;margin-bottom:10px}
-h1{font-size:clamp(2.7rem,7vw,6.6rem);line-height:.94;margin:.1em 0 .25em;max-width:1100px}
-h2{font-size:clamp(2rem,4.5vw,4.2rem);line-height:1.02;margin:.1em 0 .35em}
-h3{margin:.1em 0 .5em;color:var(--cream)}
-p{font-size:1.08rem;line-height:1.55;color:var(--muted)}
-.big{font-size:clamp(1.25rem,2vw,1.65rem);max-width:900px}
-.highlight{color:var(--cream)}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
-.card{
-  background:linear-gradient(180deg,var(--panel2),var(--panel));
-  border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)
-}
-.card strong{font-size:1.05rem}
-.num{
-  width:40px;height:40px;border-radius:11px;background:rgba(112,184,140,.16);
-  color:var(--green);display:grid;place-items:center;font-weight:900;margin-bottom:16px
-}
-.callout{
-  border-left:4px solid var(--gold);background:rgba(213,183,109,.09);
-  padding:18px 20px;border-radius:0 14px 14px 0;margin-top:22px
-}
-.criteria{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
-.criterion{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
-.criterion header{padding:17px 18px;background:#203329;font-weight:800}
-.criterion .row{display:flex;gap:12px;padding:13px 16px;border-top:1px solid var(--line);align-items:flex-start}
-.badge{min-width:30px;height:30px;border-radius:9px;background:rgba(112,184,140,.16);color:var(--green);display:grid;place-items:center;font-weight:900}
-.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
-.timeline .card p{font-size:.96rem}
-.timer-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:center;margin-top:25px}
-.candidate{
-  background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px
-}
-.candidate-name{font-size:clamp(2rem,4vw,3.4rem);font-weight:900;margin-bottom:8px}
-.timer{
-  background:var(--cream);color:#192219;border-radius:22px;padding:26px;text-align:center
-}
-.timer .clock{font-size:clamp(3rem,7vw,6rem);font-weight:900;line-height:1}
-.timer-controls{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-.primary{border:none;background:var(--green2);color:white;padding:10px 14px;border-radius:10px;font-weight:800}
-.secondary{border:1px solid rgba(0,0,0,.15);background:white;color:#223026;padding:10px 14px;border-radius:10px;font-weight:800}
-.candidate-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.candidate-tabs button{
-  border:1px solid var(--line);background:var(--panel2);color:var(--muted);padding:9px 11px;border-radius:10px
-}
-.candidate-tabs button.active{background:var(--green2);color:white;border-color:transparent}
-.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
-.field{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
-label{display:block;font-size:.86rem;color:var(--muted);margin-bottom:8px;font-weight:700}
-input,select,textarea{
-  width:100%;border:1px solid rgba(255,255,255,.16);background:#0f1713;color:var(--text);
-  border-radius:10px;padding:11px 12px;outline:none
-}
-input:focus,select:focus,textarea:focus{border-color:var(--green)}
-textarea{min-height:95px;resize:vertical}
-.table-wrap{margin-top:18px;overflow:auto;border:1px solid var(--line);border-radius:16px}
-table{width:100%;border-collapse:collapse;min-width:900px;background:var(--panel)}
-th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
-th{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:#1b2922;position:sticky;top:0}
-td select{min-width:88px}
-.total{font-weight:900;color:var(--green);font-size:1.1rem}
-.status-ok{color:var(--green);font-weight:800}
-.status-no{color:var(--red);font-weight:800}
-.small{font-size:.9rem;color:var(--muted)}
-.prediction{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
-.rank-box{
-  display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);
-  border-radius:18px;padding:20px
-}
-.rank-num{font-size:2.2rem;font-weight:900;color:var(--gold)}
-.ranking-list{margin-top:22px;display:grid;gap:10px}
-.rank-row{
-  display:grid;grid-template-columns:70px 1fr 110px 160px;gap:12px;align-items:center;
-  padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:14px
-}
-.place{font-size:1.3rem;font-weight:900;color:var(--gold)}
-.points{text-align:center;font-weight:900;color:var(--green)}
-.rules{background:rgba(112,184,140,.08);border:1px solid rgba(112,184,140,.25);border-radius:14px;padding:16px;margin-top:18px}
-.discussion{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px}
-.q{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:14px;padding:18px;font-size:1.02rem}
-.bottomnav{
-  position:absolute;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 22px;background:linear-gradient(180deg,transparent,rgba(15,23,19,.98) 35%)
-}
-.navbtn{
-  border:1px solid var(--line);background:var(--panel2);color:var(--text);
-  border-radius:12px;padding:10px 15px;font-weight:800
-}
-.slide-counter{color:var(--muted);font-size:.9rem}
-.presenter-note{font-size:.85rem;color:var(--gold);margin-top:14px}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.export-btn{background:transparent;color:var(--text);border:1px solid var(--line);padding:9px 12px;border-radius:10px}
-@media(max-width:900px){
-  .cards,.criteria,.timeline,.form-grid,.prediction,.discussion,.timer-wrap{grid-template-columns:1fr}
-  .slide{padding:34px 5vw 86px}
-  .rank-row{grid-template-columns:50px 1fr 80px}
-  .rank-row .rank-status{grid-column:2/4}
-}
-@media print{
-  body{overflow:visible;background:white;color:black}
-  .topbar,.progress,.bottomnav{display:none}
-  .stage{overflow:visible}
-  .slide{position:relative;opacity:1!important;transform:none!important;pointer-events:auto;page-break-after:always;color:black;background:white}
-  .slide:not(.printable){display:none}
-}
+  :root{
+    --un-blue:#009edb;
+    --blue-dark:#006b99;
+    --black:#111;
+    --gray:#666;
+    --light:#f4f4f4;
+    --line:#d9d9d9;
+    --white:#fff;
+    --ok:#1f7a4d;
+    --danger:#b3261e;
+  }
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;height:100%;overflow:hidden;
+    font-family:Roboto, Arial, Helvetica, sans-serif;
+    color:var(--black);background:var(--white);
+  }
+  button,select{font:inherit}
+  .app{height:100%;display:flex;flex-direction:column}
+  .top{
+    height:48px;background:#000;color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;font-size:.9rem;letter-spacing:.02em;
+  }
+  .top strong{font-weight:700}
+  .top-actions{display:flex;gap:8px}
+  .top button{
+    background:transparent;border:1px solid rgba(255,255,255,.35);
+    color:#fff;border-radius:3px;padding:6px 10px;cursor:pointer;
+  }
+  .bluebar{height:7px;background:var(--un-blue)}
+  .stage{flex:1;position:relative;overflow:hidden}
+  .slide{
+    position:absolute;inset:0;overflow:auto;
+    padding:5vh 7vw 90px;
+    opacity:0;pointer-events:none;transform:translateX(16px);
+    transition:.2s ease;
+  }
+  .slide.active{opacity:1;pointer-events:auto;transform:none}
+  .inner{max-width:1120px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center}
+  .label{
+    color:var(--blue-dark);text-transform:uppercase;letter-spacing:.11em;
+    font-size:.82rem;font-weight:700;margin-bottom:12px
+  }
+  h1{font-size:clamp(3rem,7vw,6.2rem);line-height:.95;margin:0 0 22px;font-weight:700}
+  h2{font-size:clamp(2.1rem,4.8vw,4.2rem);line-height:1.04;margin:0 0 24px}
+  h3{margin:0 0 8px;font-size:1.18rem}
+  p{font-size:1.12rem;line-height:1.5;color:var(--gray);max-width:860px}
+  .lead{font-size:clamp(1.2rem,2vw,1.65rem);color:#333}
+  .blue{color:var(--un-blue)}
+  .rule{
+    border-top:1px solid var(--line);margin:28px 0;
+  }
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+  .card{
+    border-top:5px solid var(--un-blue);
+    background:var(--light);padding:22px;min-height:150px;
+  }
+  .card p{font-size:1rem;margin-bottom:0}
+  .steps{display:grid;gap:12px;margin-top:15px}
+  .step{
+    display:grid;grid-template-columns:54px 1fr;gap:18px;
+    align-items:start;border-top:1px solid var(--line);padding-top:15px;
+  }
+  .step-no{
+    width:42px;height:42px;background:var(--un-blue);color:white;
+    display:grid;place-items:center;font-size:1.1rem;font-weight:700;
+  }
+  .step p{margin:3px 0;font-size:1rem}
+  .present{
+    display:grid;grid-template-columns:1.4fr .6fr;gap:30px;align-items:center;
+  }
+  .candidate-box{border-left:8px solid var(--un-blue);padding:15px 0 15px 22px}
+  .candidate-name{font-size:clamp(2.4rem,5vw,4.7rem);font-weight:700;line-height:1}
+  .tabs{display:flex;gap:7px;margin-top:28px;flex-wrap:wrap}
+  .tabs button{
+    width:42px;height:42px;border:1px solid var(--line);background:#fff;cursor:pointer;
+  }
+  .tabs button.active{background:var(--un-blue);border-color:var(--un-blue);color:#fff}
+  .timer{
+    background:var(--light);padding:25px;text-align:center;border-top:5px solid #000;
+  }
+  .clock{font-size:clamp(3.7rem,8vw,6rem);font-weight:700;line-height:1}
+  .timer-actions{display:flex;gap:8px;justify-content:center;margin-top:18px}
+  .btn{
+    border:0;background:var(--un-blue);color:#fff;padding:10px 17px;
+    cursor:pointer;font-weight:700;border-radius:2px;
+  }
+  .btn.alt{background:#fff;color:#111;border:1px solid #aaa}
+  .btn:disabled{background:#bcbcbc;cursor:not-allowed}
+  .prediction{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:25px 0}
+  .pick{background:var(--light);padding:20px;border-top:5px solid var(--un-blue)}
+  .rank{font-size:2rem;font-weight:700;margin-bottom:12px}
+  select{
+    width:100%;padding:11px;border:1px solid #aaa;background:#fff;
+    color:#111;border-radius:0;
+  }
+  .confirm-area{
+    border-top:1px solid var(--line);padding-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap
+  }
+  .message{font-size:.95rem;color:var(--gray)}
+  .message.ok{color:var(--ok);font-weight:700}
+  .criteria{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:15px
+  }
+  .criterion{border-top:6px solid var(--un-blue);padding-top:16px}
+  .scoreline{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .score-no{font-weight:700;color:var(--blue-dark)}
+  .table-wrap{overflow:auto;border-top:5px solid var(--un-blue)}
+  table{width:100%;border-collapse:collapse;min-width:780px}
+  th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left}
+  th{background:var(--light);font-size:.86rem}
+  td select{min-width:85px}
+  .total{font-weight:700;color:var(--blue-dark)}
+  .status-ok{color:var(--ok);font-weight:700}
+  .status-no{color:var(--danger);font-weight:700}
+  .ranking{display:grid;gap:8px;margin-top:15px}
+  .rankrow{
+    display:grid;grid-template-columns:70px 1fr 90px 160px;
+    gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:13px 4px;
+  }
+  .place{font-size:1.5rem;font-weight:700;color:var(--un-blue)}
+  .pts{font-weight:700}
+  .questions{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .question{background:var(--light);padding:20px;border-left:5px solid var(--un-blue);font-size:1.12rem}
+  .footnav{
+    position:absolute;bottom:0;left:0;right:0;height:64px;background:#fff;
+    border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;
+  }
+  .navbtn{
+    border:0;background:none;color:#222;font-weight:700;cursor:pointer;padding:10px;
+  }
+  .counter{color:var(--gray);font-size:.9rem}
+  .locked{color:var(--danger);font-weight:700}
+  .note{font-size:.88rem;color:#777}
+  @media(max-width:850px){
+    .cards,.criteria,.prediction,.questions,.present{grid-template-columns:1fr}
+    .rankrow{grid-template-columns:50px 1fr 70px}
+    .rankstatus{grid-column:2/4}
+    .slide{padding:4vh 5vw 85px}
+  }
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="topbar">
-    <div class="brand"><span class="dot"></span> Gestão Ambiental · Grupo Mediador</div>
+  <header class="top">
+    <strong>GESTÃO AMBIENTAL</strong>
     <div class="top-actions">
-      <button class="icon-btn" onclick="toggleFullscreen()">⛶ Tela cheia</button>
-      <button class="icon-btn" onclick="saveNow()">Salvar</button>
-      <button class="icon-btn" onclick="resetAll()">Limpar dados</button>
+      <button onclick="toggleFullscreen()">Tela cheia</button>
+      <button onclick="clearData()">Limpar</button>
     </div>
-  </div>
-  <div class="progress"><div id="progressBar"></div></div>
+  </header>
+  <div class="bluebar"></div>
 
-  <div class="stage">
-
+  <main class="stage">
+    <!-- 1 -->
     <section class="slide active">
-      <div class="slide-inner">
-        <div class="kicker">Dinâmica participativa</div>
-        <h1>Quem deve receber pelo cuidado da água?</h1>
-        <p class="big">
-          Simulação de um edital de <span class="highlight">Pagamento por Serviços Ambientais</span>
-          para RPPNs com foco na proteção de nascentes.
-        </p>
-        <div class="callout">
-          <strong>Papel do grupo mediador:</strong> representar a Fundação Florestal,
-          conduzir o edital, organizar as apresentações, aplicar os critérios e coordenar
-          a construção coletiva do resultado.
-        </div>
-        <p class="presenter-note">Use ← e → para avançar. Os dados preenchidos ficam salvos neste navegador.</p>
+      <div class="inner">
+        <div class="label">Dinâmica participativa</div>
+        <h1>Quem deve receber pelo <span class="blue">cuidado da água?</span></h1>
+        <p class="lead">Simulação de um edital de Pagamento por Serviços Ambientais para RPPNs voltado à proteção de nascentes.</p>
+        <div class="rule"></div>
+        <p><strong>Grupo mediador:</strong> Fundação Florestal</p>
       </div>
     </section>
 
+    <!-- 2 -->
     <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Abertura</div>
-        <h2>Antes de começar: três ideias fundamentais</h2>
+      <div class="inner">
+        <div class="label">Antes de começar</div>
+        <h2>Três ideias para orientar a atividade</h2>
         <div class="cards">
-          <div class="card"><div class="num">1</div><strong>RPPN</strong><p>Área privada destinada voluntariamente à conservação e reconhecida pelo poder público.</p></div>
-          <div class="card"><div class="num">2</div><strong>PSA</strong><p>Instrumento econômico para apoiar a manutenção ou melhoria de serviços ambientais de interesse coletivo.</p></div>
-          <div class="card"><div class="num">3</div><strong>Proteção de nascentes</strong><p>Relaciona água, vegetação, conectividade ecológica, ameaças e benefícios para a sociedade.</p></div>
-        </div>
-        <div class="callout"><strong>Hoje não vamos escolher “a melhor propriedade”.</strong> Vamos aplicar regras de um edital e observar como os critérios influenciam a decisão.</div>
-      </div>
-    </section>
-
-    <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Edital fictício</div>
-        <h2>PSA/RPPN — Nascentes Protegidas</h2>
-        <p class="big">Existem <strong class="highlight">7 candidaturas</strong>, mas recursos para apenas <strong class="highlight">3 propostas</strong>.</p>
-        <div class="cards">
-          <div class="card"><strong>Etapa 1 · Habilitação</strong><p>A área está oficialmente reconhecida como RPPN?</p><p><strong>SIM:</strong> segue para classificação.<br><strong>NÃO:</strong> é inabilitada.</p></div>
-          <div class="card"><strong>Etapa 2 · Classificação</strong><p>Três critérios, cada um com notas de 0 a 2. Pontuação máxima: 6 pontos.</p></div>
-          <div class="card"><strong>Etapa 3 · Resultado</strong><p>As três maiores pontuações são convocadas. Empates seguem regras previamente definidas.</p></div>
+          <div class="card"><h3>RPPN</h3><p>Área privada destinada voluntariamente à conservação e reconhecida pelo poder público.</p></div>
+          <div class="card"><h3>PSA</h3><p>Pagamento que apoia a manutenção ou melhoria de serviços ambientais de interesse coletivo.</p></div>
+          <div class="card"><h3>Nascentes</h3><p>A proteção da água envolve vegetação, conectividade, ameaças e benefícios para a sociedade.</p></div>
         </div>
       </div>
     </section>
 
+    <!-- 3 -->
     <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Critérios</div>
-        <h2>Como as propostas serão pontuadas?</h2>
-        <div class="criteria">
-          <div class="criterion">
-            <header>1. Importância da água</header>
-            <div class="row"><div class="badge">0</div><div>Benefício basicamente restrito à própria propriedade.</div></div>
-            <div class="row"><div class="badge">1</div><div>Beneficia propriedades vizinhas ou pequena comunidade.</div></div>
-            <div class="row"><div class="badge">2</div><div>Abastecimento comunitário, escola, serviço público ou manancial relevante.</div></div>
-          </div>
-          <div class="criterion">
-            <header>2. Importância ecológica</header>
-            <div class="row"><div class="badge">0</div><div>Pouca vegetação e área isolada.</div></div>
-            <div class="row"><div class="badge">1</div><div>Vegetação parcialmente conservada ou alguma conexão ecológica.</div></div>
-            <div class="row"><div class="badge">2</div><div>Vegetação bem conservada e conexão importante com fragmentos ou áreas protegidas.</div></div>
-          </div>
-          <div class="criterion">
-            <header>3. Ganho esperado com o PSA</header>
-            <div class="row"><div class="badge">0</div><div>Não fica claro o que o recurso modificaria.</div></div>
-            <div class="row"><div class="badge">1</div><div>Ajuda principalmente a manter uma situação já existente.</div></div>
-            <div class="row"><div class="badge">2</div><div>Há problema concreto e ação clara capaz de melhorar a proteção.</div></div>
-          </div>
-        </div>
-        <div class="rules"><strong>Desempate:</strong> 1º maior nota em importância da água; persistindo, 2º maior nota em importância ecológica.</div>
-      </div>
-    </section>
-
-    <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Roteiro da atividade</div>
-        <h2>O que acontecerá em sala</h2>
-        <div class="timeline">
-          <div class="card"><div class="num">1</div><strong>Preparação</strong><p>Cada grupo lê sua ficha e prepara uma defesa de até 3 minutos.</p></div>
-          <div class="card"><div class="num">2</div><strong>Apresentações</strong><p>Sete candidaturas apresentam suas áreas e respondem uma pergunta técnica.</p></div>
-          <div class="card"><div class="num">3</div><strong>Predição</strong><p>A turma escolhe quais três acredita que serão selecionadas — antes da pontuação.</p></div>
-          <div class="card"><div class="num">4</div><strong>Habilitação</strong><p>Verificamos quem cumpre a exigência administrativa de RPPN.</p></div>
-          <div class="card"><div class="num">5</div><strong>Pontuação</strong><p>Construímos o gabarito ao vivo com base nas informações apresentadas.</p></div>
-          <div class="card"><div class="num">6</div><strong>Debate</strong><p>Comparamos percepção, resultado técnico e possíveis mudanças no edital.</p></div>
+      <div class="inner">
+        <div class="label">O edital</div>
+        <h2>7 candidaturas. <span class="blue">3 serão selecionadas.</span></h2>
+        <p class="lead">Cada grupo receberá uma situação diferente e terá até 3 minutos para apresentar sua candidatura.</p>
+        <div class="steps">
+          <div class="step"><div class="step-no">1</div><div><h3>Apresentações</h3><p>Ouça os sete grupos.</p></div></div>
+          <div class="step"><div class="step-no">2</div><div><h3>Suposição da turma</h3><p>Antes de conhecer os critérios, a turma indicará quais três acredita que serão selecionados.</p></div></div>
+          <div class="step"><div class="step-no">3</div><div><h3>Critérios e decisão</h3><p>Somente depois da suposição, os critérios técnicos serão revelados e aplicados.</p></div></div>
         </div>
       </div>
     </section>
 
+    <!-- 4 -->
     <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Apresentações</div>
-        <h2>Rodada dos candidatos</h2>
-        <div class="timer-wrap">
-          <div class="candidate">
-            <div class="small">CANDIDATO EM APRESENTAÇÃO</div>
-            <div class="candidate-name" id="candidateName">RPPN Nascente do Cedro</div>
-            <p>Tempo sugerido: 3 minutos de apresentação + 1 minuto de pergunta.</p>
-            <div class="candidate-tabs" id="candidateTabs"></div>
-            <div class="form-grid" style="grid-template-columns:1fr 1fr;margin-top:18px">
-              <div class="field"><label>Pergunta técnica feita pela comissão</label><textarea id="questionNote" data-save="questionNote" placeholder="Digite aqui..."></textarea></div>
-              <div class="field"><label>Observação rápida da comissão</label><textarea id="presentationNote" data-save="presentationNote" placeholder="Ponto forte, dúvida, informação a conferir..."></textarea></div>
+      <div class="inner">
+        <div class="label">Apresentações</div>
+        <div class="present">
+          <div>
+            <div class="candidate-box">
+              <div class="note">CANDIDATURA EM APRESENTAÇÃO</div>
+              <div class="candidate-name" id="candidateName">RPPN Nascente do Cedro</div>
             </div>
+            <div class="tabs" id="tabs"></div>
           </div>
           <div class="timer">
-            <div class="small" style="color:#546258">CRONÔMETRO</div>
+            <div class="note">TEMPO</div>
             <div class="clock" id="clock">03:00</div>
-            <div class="timer-controls">
-              <button class="primary" onclick="startTimer()">Iniciar</button>
-              <button class="secondary" onclick="pauseTimer()">Pausar</button>
-              <button class="secondary" onclick="resetTimer()">Reiniciar</button>
+            <div class="timer-actions">
+              <button class="btn" onclick="startTimer()">Iniciar</button>
+              <button class="btn alt" onclick="pauseTimer()">Pausar</button>
+              <button class="btn alt" onclick="resetTimer()">Reiniciar</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Antes do resultado</div>
-        <h2>Predição da turma</h2>
-        <p class="big">Sem calcular as notas ainda: quais três propostas a turma acredita que serão selecionadas?</p>
+    <!-- 5 -->
+    <section class="slide" id="predictionSlide">
+      <div class="inner">
+        <div class="label">Antes dos critérios</div>
+        <h2>Qual é a suposição da turma?</h2>
+        <p class="lead">Escolham as três candidaturas que vocês acreditam que serão selecionadas.</p>
         <div class="prediction">
-          <div class="rank-box"><div class="rank-num">1º</div><select id="pred1" data-save="pred1"></select></div>
-          <div class="rank-box"><div class="rank-num">2º</div><select id="pred2" data-save="pred2"></select></div>
-          <div class="rank-box"><div class="rank-num">3º</div><select id="pred3" data-save="pred3"></select></div>
+          <div class="pick"><div class="rank">1º</div><select id="pred1"></select></div>
+          <div class="pick"><div class="rank">2º</div><select id="pred2"></select></div>
+          <div class="pick"><div class="rank">3º</div><select id="pred3"></select></div>
         </div>
-        <div class="field" style="margin-top:18px"><label>Por que a turma escolheu essas propostas?</label><textarea id="predReason" data-save="predReason" placeholder="Registre os principais argumentos citados pela turma..."></textarea></div>
+        <div class="confirm-area">
+          <button id="confirmPrediction" class="btn" onclick="confirmPrediction()">Confirmar suposição</button>
+          <span id="predictionMsg" class="message">Selecione três candidaturas diferentes.</span>
+        </div>
       </div>
     </section>
 
-    <section class="slide printable">
-      <div class="slide-inner">
-        <div class="kicker">Etapa de habilitação</div>
-        <h2>Quem pode seguir para a classificação?</h2>
-        <p>Preencha <strong>Sim</strong> ou <strong>Não</strong>. Só as candidaturas habilitadas entram no cálculo do ranking.</p>
+    <!-- 6 -->
+    <section class="slide">
+      <div class="inner">
+        <div class="label">Agora os critérios são revelados</div>
+        <h2>Primeiro: habilitação</h2>
+        <p class="lead">A área está oficialmente reconhecida como RPPN?</p>
+        <div class="cards" style="grid-template-columns:1fr 1fr">
+          <div class="card"><h3>SIM</h3><p>A candidatura segue para a etapa de classificação.</p></div>
+          <div class="card" style="border-top-color:#111"><h3>NÃO</h3><p>A candidatura é inabilitada e não recebe pontuação.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="slide">
+      <div class="inner">
+        <div class="label">Classificação</div>
+        <h2>Três critérios simples</h2>
+        <div class="criteria">
+          <div class="criterion">
+            <h3>1. Importância da água</h3>
+            <div class="scoreline"><div class="score-no">0</div><div>Uso restrito à propriedade.</div></div>
+            <div class="scoreline"><div class="score-no">1</div><div>Beneficia vizinhos ou pequena comunidade.</div></div>
+            <div class="scoreline"><div class="score-no">2</div><div>Abastecimento comunitário, escola, serviço público ou manancial relevante.</div></div>
+          </div>
+          <div class="criterion">
+            <h3>2. Importância ecológica</h3>
+            <div class="scoreline"><div class="score-no">0</div><div>Pouca vegetação e área isolada.</div></div>
+            <div class="scoreline"><div class="score-no">1</div><div>Vegetação parcial ou alguma conexão.</div></div>
+            <div class="scoreline"><div class="score-no">2</div><div>Vegetação bem conservada e conexão importante.</div></div>
+          </div>
+          <div class="criterion">
+            <h3>3. Ganho com o PSA</h3>
+            <div class="scoreline"><div class="score-no">0</div><div>Não está claro o que mudaria.</div></div>
+            <div class="scoreline"><div class="score-no">1</div><div>Principalmente manutenção do que já existe.</div></div>
+            <div class="scoreline"><div class="score-no">2</div><div>Problema concreto + ação capaz de melhorar a proteção.</div></div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:22px"><strong>Desempate:</strong> maior nota em importância da água; depois, maior nota em importância ecológica.</p>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="slide">
+      <div class="inner">
+        <div class="label">Construção coletiva</div>
+        <h2>1. Habilitação</h2>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Candidatura</th><th>RPPN oficialmente reconhecida?</th><th>Situação</th></tr></thead>
-            <tbody id="eligibilityBody"></tbody>
+            <thead><tr><th>Candidatura</th><th>RPPN reconhecida?</th><th>Situação</th></tr></thead>
+            <tbody id="eligBody"></tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <section class="slide printable">
-      <div class="slide-inner">
-        <div class="kicker">Construção do gabarito</div>
-        <h2>Pontuação ao vivo</h2>
-        <p>Definam as notas em sala, sempre justificando com as informações apresentadas pelos grupos.</p>
+    <!-- 9 -->
+    <section class="slide">
+      <div class="inner">
+        <div class="label">Construção coletiva</div>
+        <h2>2. Pontuação</h2>
         <div class="table-wrap">
           <table>
-            <thead>
-              <tr>
-                <th>Candidatura</th><th>Água</th><th>Ecológico</th><th>Ganho PSA</th><th>Total</th><th>Justificativa breve</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Candidatura</th><th>Água</th><th>Ecológico</th><th>Ganho PSA</th><th>Total</th></tr></thead>
             <tbody id="scoreBody"></tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <section class="slide printable">
-      <div class="slide-inner">
-        <div class="kicker">Resultado</div>
-        <h2>Ranking automático</h2>
-        <p>O sistema ordena apenas as propostas habilitadas. Nos empates: água primeiro, depois importância ecológica.</p>
-        <div id="rankingList" class="ranking-list"></div>
-        <div class="toolbar">
-          <button class="export-btn" onclick="exportCSV()">Exportar pontuação em CSV</button>
-          <button class="export-btn" onclick="copySummary()">Copiar resumo do resultado</button>
-        </div>
+    <!-- 10 -->
+    <section class="slide">
+      <div class="inner">
+        <div class="label">Resultado</div>
+        <h2>Ranking da seleção</h2>
+        <div id="ranking" class="ranking"></div>
       </div>
     </section>
 
+    <!-- 11 -->
     <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Recurso</div>
-        <h2>Uma contestação por grupo</h2>
-        <div class="form-grid">
-          <div class="field">
-            <label>Grupo que apresentou recurso</label>
-            <select id="appealGroup" data-save="appealGroup"></select>
+      <div class="inner">
+        <div class="label">Comparação</div>
+        <h2>Suposição × resultado</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Suposição da turma</h3>
+            <div id="predictionSummary"></div>
           </div>
-          <div class="field">
-            <label>Critério contestado</label>
-            <select id="appealCriterion" data-save="appealCriterion">
-              <option value="">Selecione</option>
-              <option>Habilitação</option>
-              <option>Importância da água</option>
-              <option>Importância ecológica</option>
-              <option>Ganho esperado com o PSA</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Decisão da comissão</label>
-            <select id="appealDecision" data-save="appealDecision">
-              <option value="">Selecione</option>
-              <option>Recurso aceito</option>
-              <option>Recurso rejeitado</option>
-              <option>Nota revista parcialmente</option>
-            </select>
+          <div class="card" style="grid-column:span 2">
+            <h3>Resultado técnico</h3>
+            <div id="technicalSummary"></div>
           </div>
         </div>
-        <div class="field" style="margin-top:16px"><label>Argumento e decisão fundamentada</label><textarea id="appealText" data-save="appealText" placeholder="Registre o argumento do grupo e a resposta da comissão..."></textarea></div>
       </div>
     </section>
 
+    <!-- 12 -->
     <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Agora vocês escrevem o edital</div>
-        <h2>Se pudéssemos mudar uma regra...</h2>
-        <p class="big">A turma pode propor uma alteração e discutir quem passaria a ser favorecido ou prejudicado.</p>
-        <div class="form-grid">
-          <div class="field"><label>Critério/regra que a turma mudaria</label><textarea id="changeRule" data-save="changeRule" placeholder="Ex.: incluir vulnerabilidade socioeconômica..."></textarea></div>
-          <div class="field"><label>Quem seria favorecido?</label><textarea id="favored" data-save="favored" placeholder="Grupo(s) ou tipo de propriedade..."></textarea></div>
-          <div class="field"><label>Quem poderia ser prejudicado?</label><textarea id="harmed" data-save="harmed" placeholder="Grupo(s) ou tipo de propriedade..."></textarea></div>
+      <div class="inner">
+        <div class="label">Fechamento</div>
+        <h2>O que o resultado nos faz discutir?</h2>
+        <div class="questions">
+          <div class="question">A proposta que parecia melhor foi a melhor classificada?</div>
+          <div class="question">Uma área já conservada deve receber PSA ou devemos priorizar onde o recurso pode produzir maior mudança?</div>
+          <div class="question">Uma excelente proposta ambiental pode ser excluída por não cumprir uma exigência administrativa?</div>
+          <div class="question">Quando mudamos um critério, mudamos apenas a pontuação ou também a política pública?</div>
         </div>
-        <div class="callout"><strong>Pergunta-chave:</strong> mudar um critério muda apenas a pontuação ou muda também a prioridade da política pública?</div>
       </div>
     </section>
 
-    <section class="slide">
-      <div class="slide-inner">
-        <div class="kicker">Fechamento</div>
-        <h2>Para discutir com a turma</h2>
-        <div class="discussion">
-          <div class="q">A proposta mais convincente foi também a melhor classificada?</div>
-          <div class="q">Uma área já muito conservada deve receber recursos ou devemos priorizar onde o PSA produz maior mudança?</div>
-          <div class="q">É adequado financiar uma grande empresa se ela atende melhor aos critérios ambientais?</div>
-          <div class="q">Uma proposta ambientalmente excelente pode ser excluída por não cumprir uma regra administrativa?</div>
-          <div class="q">Os critérios técnicos são neutros?</div>
-          <div class="q">Quem define os critérios define também, em parte, os vencedores?</div>
-        </div>
-        <div class="callout"><strong>Síntese:</strong> um edital não apenas mede uma realidade. Ele organiza prioridades, distribui recursos e traduz escolhas de política pública.</div>
-      </div>
-    </section>
-
-    <div class="bottomnav">
+    <div class="footnav">
       <button class="navbtn" onclick="prevSlide()">← Anterior</button>
-      <div class="slide-counter" id="slideCounter">1 / 12</div>
+      <div class="counter" id="counter">1 / 12</div>
       <button class="navbtn" onclick="nextSlide()">Próximo →</button>
     </div>
-  </div>
+  </main>
 </div>
 
 <script>
-const candidates = [
+const candidates=[
   "RPPN Nascente do Cedro",
   "RPPN Mata da Serra",
   "RPPN Vale das Andorinhas",
@@ -419,237 +370,188 @@ const candidates = [
   "RPPN Pedra Branca",
   "Fazenda Horizonte"
 ];
-
-const keyPrefix = "psa_rppn_mediador_v2_";
-let currentSlide = 0;
-const slides = [...document.querySelectorAll(".slide")];
+const store="psa_simple_v1_";
+const slides=[...document.querySelectorAll(".slide")];
+let current=0;
+let predictionConfirmed=localStorage.getItem(store+"confirmed")==="1";
 
 function showSlide(i){
-  currentSlide = Math.max(0, Math.min(slides.length-1, i));
-  slides.forEach((s,idx)=>s.classList.toggle("active", idx===currentSlide));
-  document.getElementById("slideCounter").textContent = `${currentSlide+1} / ${slides.length}`;
-  document.getElementById("progressBar").style.width = `${((currentSlide+1)/slides.length)*100}%`;
+  if(i>4 && !predictionConfirmed){
+    i=4;
+    document.getElementById("predictionMsg").textContent="Confirme a suposição da turma antes de revelar os critérios.";
+    document.getElementById("predictionMsg").className="message locked";
+  }
+  current=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,j)=>s.classList.toggle("active",j===current));
+  document.getElementById("counter").textContent=`${current+1} / ${slides.length}`;
+  if(current===10) refreshComparison();
 }
-function nextSlide(){showSlide(currentSlide+1)}
-function prevSlide(){showSlide(currentSlide-1)}
-
-document.addEventListener("keydown", e=>{
-  if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) return;
-  if(e.key==="ArrowRight" || e.key==="PageDown") nextSlide();
-  if(e.key==="ArrowLeft" || e.key==="PageUp") prevSlide();
+function nextSlide(){showSlide(current+1)}
+function prevSlide(){showSlide(current-1)}
+document.addEventListener("keydown",e=>{
+  if(["SELECT","INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
+  if(e.key==="ArrowRight"||e.key==="PageDown")nextSlide();
+  if(e.key==="ArrowLeft"||e.key==="PageUp")prevSlide();
 });
-
 function toggleFullscreen(){
-  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();
   else document.exitFullscreen?.();
 }
 
-function populateSelect(id, allowBlank=true){
-  const el=document.getElementById(id);
-  if(!el) return;
-  el.innerHTML = (allowBlank?'<option value="">Selecione</option>':'') +
+function fillSelect(el, blank=true){
+  el.innerHTML=(blank?'<option value="">Selecione</option>':'')+
     candidates.map(c=>`<option>${c}</option>`).join("");
 }
-["pred1","pred2","pred3","appealGroup"].forEach(id=>populateSelect(id,true));
+["pred1","pred2","pred3"].forEach(id=>fillSelect(document.getElementById(id)));
 
-const tabs=document.getElementById("candidateTabs");
+function savePred(){
+  ["pred1","pred2","pred3"].forEach(id=>localStorage.setItem(store+id,document.getElementById(id).value));
+}
+["pred1","pred2","pred3"].forEach(id=>{
+  const el=document.getElementById(id);
+  el.value=localStorage.getItem(store+id)||"";
+  el.addEventListener("change",()=>{
+    savePred();
+    if(predictionConfirmed){
+      predictionConfirmed=false;
+      localStorage.setItem(store+"confirmed","0");
+      document.getElementById("predictionMsg").textContent="A seleção foi alterada. Confirme novamente.";
+      document.getElementById("predictionMsg").className="message";
+    }
+  });
+});
+function confirmPrediction(){
+  const vals=["pred1","pred2","pred3"].map(id=>document.getElementById(id).value);
+  if(vals.some(v=>!v)||new Set(vals).size!==3){
+    document.getElementById("predictionMsg").textContent="Escolha três candidaturas diferentes.";
+    document.getElementById("predictionMsg").className="message locked";
+    return;
+  }
+  predictionConfirmed=true;
+  localStorage.setItem(store+"confirmed","1");
+  savePred();
+  document.getElementById("predictionMsg").textContent="Suposição registrada. Os critérios agora podem ser revelados.";
+  document.getElementById("predictionMsg").className="message ok";
+}
+
+const tabs=document.getElementById("tabs");
 let currentCandidate=0;
 candidates.forEach((c,i)=>{
   const b=document.createElement("button");
-  b.textContent=String(i+1);
-  b.title=c;
-  b.onclick=()=>setCandidate(i);
+  b.textContent=i+1;b.title=c;b.onclick=()=>{
+    currentCandidate=i;
+    document.getElementById("candidateName").textContent=c;
+    [...tabs.children].forEach((x,j)=>x.classList.toggle("active",j===i));
+    resetTimer();
+  };
   if(i===0)b.classList.add("active");
   tabs.appendChild(b);
 });
-function setCandidate(i){
-  currentCandidate=i;
-  document.getElementById("candidateName").textContent=candidates[i];
-  [...tabs.children].forEach((b,idx)=>b.classList.toggle("active",idx===i));
-  loadCandidateNotes();
-  resetTimer();
-}
 
-let timeLeft=180, timerId=null;
-function renderClock(){
-  const m=Math.floor(timeLeft/60).toString().padStart(2,"0");
-  const s=(timeLeft%60).toString().padStart(2,"0");
-  document.getElementById("clock").textContent=`${m}:${s}`;
+let sec=180,timer=null;
+function drawClock(){
+  document.getElementById("clock").textContent=
+    `${String(Math.floor(sec/60)).padStart(2,"0")}:${String(sec%60).padStart(2,"0")}`;
 }
 function startTimer(){
-  if(timerId) return;
-  timerId=setInterval(()=>{
-    if(timeLeft>0){timeLeft--;renderClock()}
-    else{clearInterval(timerId);timerId=null}
-  },1000);
+  if(timer)return;
+  timer=setInterval(()=>{if(sec>0){sec--;drawClock()}else pauseTimer()},1000);
 }
-function pauseTimer(){clearInterval(timerId);timerId=null}
-function resetTimer(){pauseTimer();timeLeft=180;renderClock()}
+function pauseTimer(){clearInterval(timer);timer=null}
+function resetTimer(){pauseTimer();sec=180;drawClock()}
 
-function makeScoreSelect(id){
-  return `<select id="${id}" data-save="${id}">
-    <option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option>
-  </select>`;
+function eligSelect(i){
+  return `<select id="elig_${i}"><option value="">—</option><option value="Sim">Sim</option><option value="Não">Não</option></select>`;
 }
-function makeEligSelect(id){
-  return `<select id="${id}" data-save="${id}">
-    <option value="">—</option><option value="Sim">Sim</option><option value="Não">Não</option>
-  </select>`;
+function scoreSelect(prefix,i){
+  return `<select id="${prefix}_${i}"><option value="">—</option><option>0</option><option>1</option><option>2</option></select>`;
 }
-
-const eb=document.getElementById("eligibilityBody");
-const sb=document.getElementById("scoreBody");
-
 candidates.forEach((c,i)=>{
   const tr=document.createElement("tr");
-  tr.innerHTML=`<td><strong>${c}</strong></td>
-    <td>${makeEligSelect("elig_"+i)}</td>
-    <td id="eligStatus_${i}" class="small">Aguardando</td>`;
-  eb.appendChild(tr);
-
+  tr.innerHTML=`<td><strong>${c}</strong></td><td>${eligSelect(i)}</td><td id="estatus_${i}">—</td>`;
+  document.getElementById("eligBody").appendChild(tr);
   const sr=document.createElement("tr");
-  sr.innerHTML=`<td><strong>${c}</strong></td>
-    <td>${makeScoreSelect("water_"+i)}</td>
-    <td>${makeScoreSelect("eco_"+i)}</td>
-    <td>${makeScoreSelect("gain_"+i)}</td>
-    <td id="total_${i}" class="total">—</td>
-    <td><input id="why_${i}" data-save="why_${i}" placeholder="Justificativa breve"></td>`;
-  sb.appendChild(sr);
+  sr.innerHTML=`<td><strong>${c}</strong></td><td>${scoreSelect("water",i)}</td><td>${scoreSelect("eco",i)}</td><td>${scoreSelect("gain",i)}</td><td id="total_${i}" class="total">—</td>`;
+  document.getElementById("scoreBody").appendChild(sr);
+});
+candidates.forEach((c,i)=>{
+  ["elig","water","eco","gain"].forEach(p=>{
+    const el=document.getElementById(`${p}_${i}`);
+    const saved=localStorage.getItem(store+`${p}_${i}`);
+    if(saved!==null)el.value=saved;
+    el.addEventListener("change",()=>{
+      localStorage.setItem(store+`${p}_${i}`,el.value);
+      updateData();
+    });
+  });
 });
 
-function updateAll(){
+function updateData(){
   candidates.forEach((c,i)=>{
-    const elig=document.getElementById("elig_"+i).value;
-    const status=document.getElementById("eligStatus_"+i);
-    status.textContent = elig==="Sim" ? "Habilitada" : elig==="Não" ? "Inabilitada" : "Aguardando";
-    status.className = elig==="Sim" ? "status-ok" : elig==="Não" ? "status-no" : "small";
-
-    const w=document.getElementById("water_"+i);
-    const e=document.getElementById("eco_"+i);
-    const g=document.getElementById("gain_"+i);
-    const disabled = elig!=="Sim";
-    [w,e,g].forEach(x=>x.disabled=disabled);
-
-    if(elig==="Sim" && w.value!=="" && e.value!=="" && g.value!==""){
-      document.getElementById("total_"+i).textContent=Number(w.value)+Number(e.value)+Number(g.value);
-    } else {
-      document.getElementById("total_"+i).textContent= elig==="Não" ? "—" : "—";
-    }
+    const elig=document.getElementById(`elig_${i}`).value;
+    const stat=document.getElementById(`estatus_${i}`);
+    stat.textContent=elig==="Sim"?"Habilitada":elig==="Não"?"Inabilitada":"—";
+    stat.className=elig==="Sim"?"status-ok":elig==="Não"?"status-no":"";
+    ["water","eco","gain"].forEach(p=>document.getElementById(`${p}_${i}`).disabled=elig!=="Sim");
+    const vals=["water","eco","gain"].map(p=>document.getElementById(`${p}_${i}`).value);
+    document.getElementById(`total_${i}`).textContent=
+      elig==="Sim" && vals.every(v=>v!=="") ? vals.reduce((a,v)=>a+Number(v),0) : "—";
   });
   renderRanking();
-  autoSave();
 }
-
+function rankingData(){
+  const arr=[];
+  candidates.forEach((c,i)=>{
+    const elig=document.getElementById(`elig_${i}`).value;
+    const w=document.getElementById(`water_${i}`).value;
+    const e=document.getElementById(`eco_${i}`).value;
+    const g=document.getElementById(`gain_${i}`).value;
+    if(elig==="Sim" && w!=="" && e!=="" && g!==""){
+      arr.push({name:c,w:+w,e:+e,g:+g,total:+w + +e + +g});
+    }
+  });
+  return arr.sort((a,b)=>b.total-a.total||b.w-a.w||b.e-a.e||a.name.localeCompare(b.name));
+}
 function renderRanking(){
-  const list=document.getElementById("rankingList");
-  const rows=[];
+  const arr=rankingData();
+  const box=document.getElementById("ranking");
+  if(!arr.length){box.innerHTML="<p>O ranking aparecerá após o preenchimento das notas.</p>";return}
+  box.innerHTML=arr.map((r,i)=>`
+    <div class="rankrow">
+      <div class="place">${i+1}º</div>
+      <div><strong>${r.name}</strong><div class="note">Água ${r.w} · Ecológico ${r.e} · Ganho PSA ${r.g}</div></div>
+      <div class="pts">${r.total} pts</div>
+      <div class="rankstatus ${i<3?"status-ok":""}">${i<3?"Selecionada":"Não selecionada"}</div>
+    </div>`).join("");
+}
+function refreshComparison(){
+  const pred=["pred1","pred2","pred3"].map(id=>document.getElementById(id).value);
+  document.getElementById("predictionSummary").innerHTML=
+    pred.map((x,i)=>`<p><strong>${i+1}º</strong> ${x||"—"}</p>`).join("");
+  const arr=rankingData().slice(0,3);
+  document.getElementById("technicalSummary").innerHTML=
+    arr.length?arr.map((x,i)=>`<p><strong>${i+1}º</strong> ${x.name} — ${x.total} pontos</p>`).join("")
+    :"<p>Complete a pontuação para gerar o resultado.</p>";
+}
+function clearData(){
+  if(!confirm("Apagar a suposição e todas as pontuações?"))return;
+  Object.keys(localStorage).filter(k=>k.startsWith(store)).forEach(k=>localStorage.removeItem(k));
+  predictionConfirmed=false;
+  ["pred1","pred2","pred3"].forEach(id=>document.getElementById(id).value="");
   candidates.forEach((c,i)=>{
-    if(document.getElementById("elig_"+i).value!=="Sim") return;
-    const vals=["water_","eco_","gain_"].map(p=>document.getElementById(p+i).value);
-    if(vals.some(v=>v==="")) return;
-    rows.push({
-      name:c,
-      water:Number(vals[0]),
-      eco:Number(vals[1]),
-      gain:Number(vals[2]),
-      total:vals.reduce((a,v)=>a+Number(v),0)
-    });
+    ["elig","water","eco","gain"].forEach(p=>document.getElementById(`${p}_${i}`).value="");
   });
-  rows.sort((a,b)=> b.total-a.total || b.water-a.water || b.eco-a.eco || a.name.localeCompare(b.name));
-  if(!rows.length){
-    list.innerHTML='<div class="card"><p>Preencha habilitação e pontuações para gerar o ranking.</p></div>';
-    return;
-  }
-  list.innerHTML=rows.map((r,idx)=>{
-    const selected=idx<3;
-    return `<div class="rank-row">
-      <div class="place">${idx+1}º</div>
-      <div><strong>${r.name}</strong><div class="small">Água ${r.water} · Ecológico ${r.eco} · Ganho PSA ${r.gain}</div></div>
-      <div class="points">${r.total} pts</div>
-      <div class="rank-status ${selected?'status-ok':''}">${selected?'Selecionada':'Não selecionada'}</div>
-    </div>`;
-  }).join("");
+  document.getElementById("predictionMsg").textContent="Selecione três candidaturas diferentes.";
+  document.getElementById("predictionMsg").className="message";
+  updateData();
 }
-
-document.addEventListener("change", e=>{
-  if(e.target.matches("[data-save]")) { saveField(e.target); updateAll(); }
-});
-document.addEventListener("input", e=>{
-  if(e.target.matches("[data-save]")) saveField(e.target);
-});
-
-function saveField(el){localStorage.setItem(keyPrefix+el.dataset.save, el.value)}
-function autoSave(){
-  document.querySelectorAll("[data-save]").forEach(saveField);
-}
-function saveNow(){
-  autoSave();
-  const old=document.title;
-  document.title="Dados salvos ✓";
-  setTimeout(()=>document.title=old,900);
-}
-function restore(){
-  document.querySelectorAll("[data-save]").forEach(el=>{
-    const v=localStorage.getItem(keyPrefix+el.dataset.save);
-    if(v!==null) el.value=v;
-  });
-  loadCandidateNotes();
-  updateAll();
-}
-function resetAll(){
-  if(!confirm("Apagar todos os dados preenchidos nesta apresentação?")) return;
-  Object.keys(localStorage).filter(k=>k.startsWith(keyPrefix)).forEach(k=>localStorage.removeItem(k));
-  document.querySelectorAll("[data-save]").forEach(el=>el.value="");
-  updateAll();
-  loadCandidateNotes();
-}
-
-function noteKey(type){return keyPrefix+type+"_cand_"+currentCandidate}
-function loadCandidateNotes(){
-  const q=document.getElementById("questionNote");
-  const p=document.getElementById("presentationNote");
-  q.value=localStorage.getItem(noteKey("question"))||"";
-  p.value=localStorage.getItem(noteKey("presentation"))||"";
-}
-document.getElementById("questionNote").addEventListener("input",e=>localStorage.setItem(noteKey("question"),e.target.value));
-document.getElementById("presentationNote").addEventListener("input",e=>localStorage.setItem(noteKey("presentation"),e.target.value));
-
-function getRankingData(){
-  const rows=[];
-  candidates.forEach((c,i)=>{
-    const elig=document.getElementById("elig_"+i).value;
-    const w=document.getElementById("water_"+i).value;
-    const e=document.getElementById("eco_"+i).value;
-    const g=document.getElementById("gain_"+i).value;
-    rows.push({
-      name:c,elig,
-      water:w,eco:e,gain:g,
-      total:(elig==="Sim" && w!==""&&e!==""&&g!=="")?Number(w)+Number(e)+Number(g):"",
-      why:document.getElementById("why_"+i).value
-    });
-  });
-  return rows;
-}
-function exportCSV(){
-  const data=getRankingData();
-  const header=["Candidatura","Habilitação","Água","Ecológico","Ganho PSA","Total","Justificativa"];
-  const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
-  const csv=[header,...data.map(r=>[r.name,r.elig,r.water,r.eco,r.gain,r.total,r.why])].map(row=>row.map(esc).join(";")).join("\n");
-  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="resultado_psa_rppn.csv";a.click();URL.revokeObjectURL(a.href);
-}
-function copySummary(){
-  const ranked=getRankingData()
-    .filter(r=>r.elig==="Sim" && r.total!=="")
-    .sort((a,b)=>b.total-a.total || Number(b.water)-Number(a.water) || Number(b.eco)-Number(a.eco));
-  const txt=ranked.map((r,i)=>`${i+1}º ${r.name} — ${r.total} pontos`).join("\n");
-  navigator.clipboard?.writeText(txt);
-  alert("Resumo copiado.");
-}
-
-restore();
+updateData();
+drawClock();
 showSlide(0);
-renderClock();
+if(predictionConfirmed){
+  document.getElementById("predictionMsg").textContent="Suposição já registrada. Os critérios podem ser revelados.";
+  document.getElementById("predictionMsg").className="message ok";
+}
 </script>
 </body>
 </html>
