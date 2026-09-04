@@ -1,940 +1,655 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Dinâmica participativa sobre Pagamento por Serviços Ambientais (PSA) e RPPNs para a disciplina de Gestão Ambiental." />
-  <title>Dinâmica PSA & RPPN | Gestão Ambiental</title>
-
-  <style>
-    :root{
-      --bg:#f5f7f2;
-      --surface:#ffffff;
-      --text:#1f2a24;
-      --muted:#5f6f65;
-      --brand:#2f6b4f;
-      --brand-dark:#214b38;
-      --brand-soft:#e5f0e8;
-      --accent:#b98b3d;
-      --danger:#9b3d3d;
-      --border:#d9e1dc;
-      --shadow:0 10px 30px rgba(31,42,36,.08);
-      --radius:18px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:Arial, Helvetica, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.65;
-    }
-
-    a{color:inherit}
-    button{font:inherit}
-
-    .hero{
-      background:
-        linear-gradient(135deg, rgba(33,75,56,.96), rgba(47,107,79,.90)),
-        radial-gradient(circle at top right, rgba(255,255,255,.14), transparent 35%);
-      color:white;
-      padding:64px 24px 54px;
-    }
-
-    .hero-inner,
-    main,
-    .footer-inner{
-      width:min(1120px, 92%);
-      margin:0 auto;
-    }
-
-    .eyebrow{
-      display:inline-block;
-      padding:6px 12px;
-      border:1px solid rgba(255,255,255,.35);
-      border-radius:999px;
-      font-size:.85rem;
-      letter-spacing:.04em;
-      text-transform:uppercase;
-      margin-bottom:16px;
-      background:rgba(255,255,255,.08);
-    }
-
-    h1{
-      margin:0;
-      font-size:clamp(2.2rem, 6vw, 4.8rem);
-      line-height:1.02;
-      max-width:900px;
-    }
-
-    .hero p{
-      max-width:790px;
-      font-size:1.12rem;
-      opacity:.94;
-      margin-top:20px;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:28px;
-    }
-
-    .btn{
-      border:none;
-      border-radius:12px;
-      padding:12px 18px;
-      cursor:pointer;
-      font-weight:700;
-      transition:.2s ease;
-      text-decoration:none;
-      display:inline-block;
-    }
-
-    .btn-primary{
-      background:white;
-      color:var(--brand-dark);
-    }
-
-    .btn-secondary{
-      background:transparent;
-      color:white;
-      border:1px solid rgba(255,255,255,.45);
-    }
-
-    .btn:hover{transform:translateY(-1px)}
-    .btn:focus-visible,
-    summary:focus-visible{
-      outline:3px solid #ffd98b;
-      outline-offset:3px;
-    }
-
-    nav{
-      position:sticky;
-      top:0;
-      z-index:20;
-      background:rgba(255,255,255,.96);
-      border-bottom:1px solid var(--border);
-      backdrop-filter:blur(10px);
-    }
-
-    .nav-inner{
-      width:min(1120px, 92%);
-      margin:0 auto;
-      display:flex;
-      gap:18px;
-      overflow-x:auto;
-      padding:12px 0;
-      scrollbar-width:none;
-    }
-
-    .nav-inner::-webkit-scrollbar{display:none}
-
-    nav a{
-      white-space:nowrap;
-      text-decoration:none;
-      font-size:.92rem;
-      color:var(--muted);
-      font-weight:700;
-    }
-
-    nav a:hover{color:var(--brand)}
-
-    main{padding:34px 0 70px}
-
-    section{
-      scroll-margin-top:74px;
-      margin:0 0 48px;
-    }
-
-    .section-label{
-      color:var(--brand);
-      font-size:.82rem;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      margin-bottom:6px;
-    }
-
-    h2{
-      margin:.1rem 0 .8rem;
-      font-size:clamp(1.65rem, 4vw, 2.35rem);
-      line-height:1.2;
-      color:var(--brand-dark);
-    }
-
-    h3{
-      margin-top:0;
-      color:var(--brand-dark);
-    }
-
-    .lead{
-      font-size:1.08rem;
-      max-width:900px;
-      color:var(--muted);
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:18px;
-      margin-top:22px;
-    }
-
-    .card{
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:22px;
-      box-shadow:var(--shadow);
-    }
-
-    .card p:last-child{margin-bottom:0}
-
-    .number{
-      width:42px;
-      height:42px;
-      display:grid;
-      place-items:center;
-      border-radius:12px;
-      background:var(--brand-soft);
-      color:var(--brand-dark);
-      font-weight:800;
-      margin-bottom:14px;
-    }
-
-    .callout{
-      background:var(--brand-soft);
-      border-left:5px solid var(--brand);
-      padding:18px 20px;
-      border-radius:0 14px 14px 0;
-      margin:22px 0;
-    }
-
-    .criteria{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:16px;
-      margin-top:20px;
-    }
-
-    .criterion{
-      background:white;
-      border:1px solid var(--border);
-      border-radius:16px;
-      overflow:hidden;
-    }
-
-    .criterion h3{
-      margin:0;
-      padding:16px 18px;
-      background:var(--brand-dark);
-      color:#fff;
-      font-size:1.03rem;
-    }
-
-    .criterion table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:.92rem;
-    }
-
-    .criterion td{
-      padding:11px 14px;
-      border-top:1px solid var(--border);
-      vertical-align:top;
-    }
-
-    .score{
-      width:52px;
-      font-weight:800;
-      color:var(--brand);
-      white-space:nowrap;
-    }
-
-    .timeline{
-      position:relative;
-      margin-top:24px;
-      padding-left:28px;
-    }
-
-    .timeline::before{
-      content:"";
-      position:absolute;
-      left:8px;
-      top:4px;
-      bottom:4px;
-      width:2px;
-      background:var(--border);
-    }
-
-    .step{
-      position:relative;
-      margin-bottom:22px;
-      background:white;
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:16px 18px;
-    }
-
-    .step::before{
-      content:"";
-      position:absolute;
-      left:-27px;
-      top:20px;
-      width:12px;
-      height:12px;
-      border-radius:50%;
-      background:var(--brand);
-      box-shadow:0 0 0 4px var(--bg);
-    }
-
-    .step strong{
-      color:var(--brand-dark);
-    }
-
-    .time{
-      display:inline-block;
-      background:var(--brand-soft);
-      color:var(--brand-dark);
-      font-weight:700;
-      border-radius:999px;
-      padding:3px 9px;
-      margin-left:6px;
-      font-size:.84rem;
-    }
-
-    .groups{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:16px;
-      margin-top:20px;
-    }
-
-    details.group{
-      background:white;
-      border:1px solid var(--border);
-      border-radius:16px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    details.group summary{
-      cursor:pointer;
-      list-style:none;
-      padding:18px 20px;
-      font-weight:800;
-      color:var(--brand-dark);
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      align-items:center;
-    }
-
-    details.group summary::-webkit-details-marker{display:none}
-    details.group summary::after{
-      content:"+";
-      font-size:1.35rem;
-      color:var(--brand);
-      transition:.2s ease;
-    }
-
-    details.group[open] summary::after{transform:rotate(45deg)}
-
-    .group-body{
-      border-top:1px solid var(--border);
-      padding:17px 20px 20px;
-    }
-
-    .group-body ul{padding-left:20px}
-
-    .tag{
-      display:inline-block;
-      padding:4px 9px;
-      border-radius:999px;
-      background:var(--brand-soft);
-      color:var(--brand-dark);
-      font-size:.78rem;
-      font-weight:800;
-      margin-right:6px;
-      margin-bottom:6px;
-    }
-
-    .result-panel{
-      background:white;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:22px;
-      box-shadow:var(--shadow);
-    }
-
-    .result-hidden{
-      display:none;
-      margin-top:20px;
-    }
-
-    .result-hidden.show{display:block}
-
-    .ranking{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:14px;
-      font-size:.93rem;
-    }
-
-    .ranking th,
-    .ranking td{
-      text-align:left;
-      border-bottom:1px solid var(--border);
-      padding:10px 8px;
-    }
-
-    .ranking th{
-      color:var(--brand-dark);
-      background:#f7faf8;
-    }
-
-    .winner{
-      font-weight:800;
-      color:var(--brand-dark);
-    }
-
-    .ineligible{
-      color:var(--danger);
-      font-weight:800;
-    }
-
-    .discussion{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:16px;
-      margin-top:20px;
-    }
-
-    .question{
-      background:white;
-      border-left:4px solid var(--accent);
-      border-radius:12px;
-      padding:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .reference{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:18px;
-      margin-top:12px;
-      font-size:.95rem;
-    }
-
-    footer{
-      background:var(--brand-dark);
-      color:white;
-      padding:32px 0;
-    }
-
-    footer p{
-      margin:.35rem 0;
-      opacity:.9;
-    }
-
-    .small{
-      font-size:.88rem;
-      color:var(--muted);
-    }
-
-    @media (max-width:850px){
-      .grid,.criteria{grid-template-columns:1fr}
-      .groups,.discussion{grid-template-columns:1fr}
-      .hero{padding-top:48px}
-    }
-
-    @media print{
-      nav,.hero-actions,.reveal-controls{display:none!important}
-      body{background:white}
-      .hero{
-        color:black;
-        background:white;
-        padding:20px 0;
-        border-bottom:2px solid #000;
-      }
-      .hero-inner,main,.footer-inner{width:100%}
-      .card,.group,.result-panel,.question{
-        box-shadow:none!important;
-        break-inside:avoid;
-      }
-      details.group .group-body{display:block!important}
-      details.group:not([open]) .group-body{display:block!important}
-      footer{background:white;color:black;border-top:1px solid #000}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSA & RPPN — Apresentação do Grupo Mediador</title>
+<style>
+:root{
+  --bg:#0f1713;
+  --panel:#17221c;
+  --panel2:#1d2c24;
+  --text:#f5f7f5;
+  --muted:#b8c4bc;
+  --green:#70b88c;
+  --green2:#3d7f5c;
+  --cream:#f0eadf;
+  --gold:#d5b76d;
+  --red:#d37b7b;
+  --line:rgba(255,255,255,.12);
+  --shadow:0 18px 60px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{height:100%;display:flex;flex-direction:column}
+.topbar{
+  height:58px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;border-bottom:1px solid var(--line);background:rgba(15,23,19,.96);z-index:20
+}
+.brand{display:flex;gap:10px;align-items:center;font-weight:800}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--green)}
+.top-actions{display:flex;gap:8px;align-items:center}
+.icon-btn{
+  border:1px solid var(--line);background:transparent;color:var(--text);
+  border-radius:10px;padding:8px 11px
+}
+.icon-btn:hover{background:rgba(255,255,255,.06)}
+.progress{height:4px;background:#203028}
+.progress > div{height:100%;background:var(--green);width:0%;transition:.25s}
+.stage{flex:1;position:relative;overflow:hidden}
+.slide{
+  position:absolute;inset:0;padding:48px 6vw 86px;overflow:auto;
+  opacity:0;transform:translateX(24px);pointer-events:none;transition:.25s ease
+}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
+.slide-inner{max-width:1180px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center}
+.kicker{text-transform:uppercase;letter-spacing:.13em;color:var(--green);font-size:.82rem;font-weight:800;margin-bottom:10px}
+h1{font-size:clamp(2.7rem,7vw,6.6rem);line-height:.94;margin:.1em 0 .25em;max-width:1100px}
+h2{font-size:clamp(2rem,4.5vw,4.2rem);line-height:1.02;margin:.1em 0 .35em}
+h3{margin:.1em 0 .5em;color:var(--cream)}
+p{font-size:1.08rem;line-height:1.55;color:var(--muted)}
+.big{font-size:clamp(1.25rem,2vw,1.65rem);max-width:900px}
+.highlight{color:var(--cream)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.card{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)
+}
+.card strong{font-size:1.05rem}
+.num{
+  width:40px;height:40px;border-radius:11px;background:rgba(112,184,140,.16);
+  color:var(--green);display:grid;place-items:center;font-weight:900;margin-bottom:16px
+}
+.callout{
+  border-left:4px solid var(--gold);background:rgba(213,183,109,.09);
+  padding:18px 20px;border-radius:0 14px 14px 0;margin-top:22px
+}
+.criteria{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.criterion{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
+.criterion header{padding:17px 18px;background:#203329;font-weight:800}
+.criterion .row{display:flex;gap:12px;padding:13px 16px;border-top:1px solid var(--line);align-items:flex-start}
+.badge{min-width:30px;height:30px;border-radius:9px;background:rgba(112,184,140,.16);color:var(--green);display:grid;place-items:center;font-weight:900}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.timeline .card p{font-size:.96rem}
+.timer-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:center;margin-top:25px}
+.candidate{
+  background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px
+}
+.candidate-name{font-size:clamp(2rem,4vw,3.4rem);font-weight:900;margin-bottom:8px}
+.timer{
+  background:var(--cream);color:#192219;border-radius:22px;padding:26px;text-align:center
+}
+.timer .clock{font-size:clamp(3rem,7vw,6rem);font-weight:900;line-height:1}
+.timer-controls{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.primary{border:none;background:var(--green2);color:white;padding:10px 14px;border-radius:10px;font-weight:800}
+.secondary{border:1px solid rgba(0,0,0,.15);background:white;color:#223026;padding:10px 14px;border-radius:10px;font-weight:800}
+.candidate-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.candidate-tabs button{
+  border:1px solid var(--line);background:var(--panel2);color:var(--muted);padding:9px 11px;border-radius:10px
+}
+.candidate-tabs button.active{background:var(--green2);color:white;border-color:transparent}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.field{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+label{display:block;font-size:.86rem;color:var(--muted);margin-bottom:8px;font-weight:700}
+input,select,textarea{
+  width:100%;border:1px solid rgba(255,255,255,.16);background:#0f1713;color:var(--text);
+  border-radius:10px;padding:11px 12px;outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--green)}
+textarea{min-height:95px;resize:vertical}
+.table-wrap{margin-top:18px;overflow:auto;border:1px solid var(--line);border-radius:16px}
+table{width:100%;border-collapse:collapse;min-width:900px;background:var(--panel)}
+th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:#1b2922;position:sticky;top:0}
+td select{min-width:88px}
+.total{font-weight:900;color:var(--green);font-size:1.1rem}
+.status-ok{color:var(--green);font-weight:800}
+.status-no{color:var(--red);font-weight:800}
+.small{font-size:.9rem;color:var(--muted)}
+.prediction{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.rank-box{
+  display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);
+  border-radius:18px;padding:20px
+}
+.rank-num{font-size:2.2rem;font-weight:900;color:var(--gold)}
+.ranking-list{margin-top:22px;display:grid;gap:10px}
+.rank-row{
+  display:grid;grid-template-columns:70px 1fr 110px 160px;gap:12px;align-items:center;
+  padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:14px
+}
+.place{font-size:1.3rem;font-weight:900;color:var(--gold)}
+.points{text-align:center;font-weight:900;color:var(--green)}
+.rules{background:rgba(112,184,140,.08);border:1px solid rgba(112,184,140,.25);border-radius:14px;padding:16px;margin-top:18px}
+.discussion{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px}
+.q{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:14px;padding:18px;font-size:1.02rem}
+.bottomnav{
+  position:absolute;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;background:linear-gradient(180deg,transparent,rgba(15,23,19,.98) 35%)
+}
+.navbtn{
+  border:1px solid var(--line);background:var(--panel2);color:var(--text);
+  border-radius:12px;padding:10px 15px;font-weight:800
+}
+.slide-counter{color:var(--muted);font-size:.9rem}
+.presenter-note{font-size:.85rem;color:var(--gold);margin-top:14px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.export-btn{background:transparent;color:var(--text);border:1px solid var(--line);padding:9px 12px;border-radius:10px}
+@media(max-width:900px){
+  .cards,.criteria,.timeline,.form-grid,.prediction,.discussion,.timer-wrap{grid-template-columns:1fr}
+  .slide{padding:34px 5vw 86px}
+  .rank-row{grid-template-columns:50px 1fr 80px}
+  .rank-row .rank-status{grid-column:2/4}
+}
+@media print{
+  body{overflow:visible;background:white;color:black}
+  .topbar,.progress,.bottomnav{display:none}
+  .stage{overflow:visible}
+  .slide{position:relative;opacity:1!important;transform:none!important;pointer-events:auto;page-break-after:always;color:black;background:white}
+  .slide:not(.printable){display:none}
+}
+</style>
 </head>
-
 <body>
-  <header class="hero">
-    <div class="hero-inner">
-      <span class="eyebrow">Disciplina de Gestão Ambiental</span>
-      <h1>Quem deve receber pelo cuidado da água?</h1>
-      <p>
-        Simulação participativa de um edital de Pagamento por Serviços Ambientais (PSA)
-        para Reservas Particulares do Patrimônio Natural (RPPNs), com foco na proteção
-        de nascentes, tomada de decisão e critérios de política pública.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#como-funcionou">Ver a dinâmica</a>
-        <a class="btn btn-secondary" href="#grupos">Conhecer os casos</a>
-      </div>
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Gestão Ambiental · Grupo Mediador</div>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="toggleFullscreen()">⛶ Tela cheia</button>
+      <button class="icon-btn" onclick="saveNow()">Salvar</button>
+      <button class="icon-btn" onclick="resetAll()">Limpar dados</button>
     </div>
-  </header>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
 
-  <nav aria-label="Navegação principal">
-    <div class="nav-inner">
-      <a href="#contexto">Contexto</a>
-      <a href="#objetivos">Objetivos</a>
-      <a href="#criterios">Critérios</a>
-      <a href="#como-funcionou">Etapas</a>
-      <a href="#grupos">7 grupos</a>
-      <a href="#resultado">Resultado</a>
-      <a href="#reflexao">Reflexão</a>
-      <a href="#referencias">Referências</a>
-    </div>
-  </nav>
+  <div class="stage">
 
-  <main>
-    <section id="contexto">
-      <div class="section-label">Contexto da atividade</div>
-      <h2>Uma política ambiental transformada em experiência de decisão</h2>
-      <p class="lead">
-        A turma foi organizada em oito grupos. Um grupo assumiu o papel de comissão
-        mediadora da Fundação Florestal e sete grupos representaram proprietários ou
-        gestores de áreas candidatas a um edital fictício de PSA. O edital possuía
-        recursos para selecionar apenas três propostas.
-      </p>
-
-      <div class="callout">
-        <strong>Questão central:</strong> a proposta mais convincente também seria a
-        proposta tecnicamente melhor classificada?
-      </div>
-
-      <div class="grid">
-        <article class="card">
-          <div class="number">1</div>
-          <h3>RPPN</h3>
-          <p>
-            Reserva Particular do Patrimônio Natural: unidade de conservação criada
-            voluntariamente em propriedade privada e reconhecida pelo poder público.
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="number">2</div>
-          <h3>PSA</h3>
-          <p>
-            Pagamento por Serviços Ambientais: instrumento econômico destinado a apoiar
-            a manutenção ou melhoria de benefícios ambientais de interesse coletivo.
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="number">3</div>
-          <h3>Nascentes</h3>
-          <p>
-            A proteção das nascentes foi utilizada como eixo para discutir água,
-            vegetação, conectividade ecológica, ameaças ambientais e benefício social.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section id="objetivos">
-      <div class="section-label">Objetivos educacionais</div>
-      <h2>O que a dinâmica buscou desenvolver</h2>
-      <div class="grid">
-        <article class="card">
-          <h3>Compreensão conceitual</h3>
-          <p>Introduzir RPPN, PSA, serviços ambientais e proteção de nascentes.</p>
-        </article>
-        <article class="card">
-          <h3>Decisão baseada em critérios</h3>
-          <p>Distinguir percepção, persuasão e preferência de uma classificação técnica previamente definida.</p>
-        </article>
-        <article class="card">
-          <h3>Análise de política pública</h3>
-          <p>Perceber que critérios aparentemente técnicos também expressam prioridades e escolhas políticas.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="criterios">
-      <div class="section-label">Edital simplificado</div>
-      <h2>Três critérios, de 0 a 2 pontos</h2>
-      <p class="lead">
-        Antes da pontuação havia uma etapa de habilitação: somente áreas oficialmente
-        reconhecidas como RPPN poderiam seguir para a classificação. Cada proposta
-        habilitada poderia alcançar no máximo 6 pontos.
-      </p>
-
-      <div class="criteria">
-        <article class="criterion">
-          <h3>1. Importância da água</h3>
-          <table>
-            <tr><td class="score">0</td><td>Benefício basicamente restrito à própria propriedade.</td></tr>
-            <tr><td class="score">1</td><td>Beneficia propriedades vizinhas ou uma pequena comunidade.</td></tr>
-            <tr><td class="score">2</td><td>Contribui para abastecimento comunitário, escola, serviço público ou manancial relevante.</td></tr>
-          </table>
-        </article>
-
-        <article class="criterion">
-          <h3>2. Importância ecológica</h3>
-          <table>
-            <tr><td class="score">0</td><td>Pouca vegetação e área isolada.</td></tr>
-            <tr><td class="score">1</td><td>Vegetação parcialmente conservada ou alguma conexão ecológica.</td></tr>
-            <tr><td class="score">2</td><td>Vegetação bem conservada e conexão importante com outros fragmentos ou áreas protegidas.</td></tr>
-          </table>
-        </article>
-
-        <article class="criterion">
-          <h3>3. Ganho esperado com o PSA</h3>
-          <table>
-            <tr><td class="score">0</td><td>Não fica claro o que o recurso modificaria.</td></tr>
-            <tr><td class="score">1</td><td>O PSA ajudaria principalmente a manter uma situação já existente.</td></tr>
-            <tr><td class="score">2</td><td>Há problema concreto e ação clara capaz de melhorar a proteção da nascente.</td></tr>
-          </table>
-        </article>
-      </div>
-
-      <div class="callout">
-        <strong>Desempate:</strong> maior nota em importância da água. Persistindo o
-        empate, maior nota em importância ecológica.
-      </div>
-    </section>
-
-    <section id="como-funcionou">
-      <div class="section-label">Roteiro aplicado</div>
-      <h2>Como a atividade aconteceu em sala</h2>
-
-      <div class="timeline">
-        <div class="step">
-          <strong>1. Abertura e lançamento do edital</strong>
-          <span class="time">0–7 min</span>
-          <p>O grupo mediador apresentou RPPN, PSA, proteção de nascentes, habilitação, classificação e as regras do edital.</p>
-        </div>
-
-        <div class="step">
-          <strong>2. Preparação das candidaturas</strong>
-          <span class="time">7–17 min</span>
-          <p>Cada grupo recebeu apenas sua própria ficha e preparou uma defesa de até 3 minutos, sem inventar informações.</p>
-        </div>
-
-        <div class="step">
-          <strong>3. Apresentações e perguntas</strong>
-          <span class="time">17–45 min</span>
-          <p>Os sete candidatos apresentaram suas áreas. A comissão fez perguntas técnicas para esclarecer fatos ligados aos critérios.</p>
-        </div>
-
-        <div class="step">
-          <strong>4. Predição da turma</strong>
-          <span class="time">45–50 min</span>
-          <p>Antes de qualquer pontuação pública, cada estudante indicou quais três propostas acreditava que seriam selecionadas.</p>
-        </div>
-
-        <div class="step">
-          <strong>5. Habilitação</strong>
-          <span class="time">50–55 min</span>
-          <p>A comissão verificou quais áreas cumpriam a condição obrigatória de reconhecimento como RPPN.</p>
-        </div>
-
-        <div class="step">
-          <strong>6. Construção coletiva do gabarito</strong>
-          <span class="time">55–67 min</span>
-          <p>As notas foram atribuídas publicamente, critério por critério, sempre justificadas pelas informações objetivas apresentadas.</p>
-        </div>
-
-        <div class="step">
-          <strong>7. Ranking e resultado</strong>
-          <span class="time">67–72 min</span>
-          <p>As propostas foram ordenadas e os critérios de desempate foram aplicados.</p>
-        </div>
-
-        <div class="step">
-          <strong>8. Recurso rápido</strong>
-          <span class="time">72–77 min</span>
-          <p>Cada grupo pôde questionar uma pontuação, desde que apontasse uma informação já existente na própria ficha.</p>
-        </div>
-
-        <div class="step">
-          <strong>9. Reformulação do edital</strong>
-          <span class="time">77–85 min</span>
-          <p>A turma discutiu se concordava com o resultado e propôs mudanças nos critérios, avaliando quem seria favorecido ou prejudicado.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="grupos">
-      <div class="section-label">Casos simulados</div>
-      <h2>Os sete grupos candidatos</h2>
-      <p class="lead">
-        Clique em cada candidatura para abrir a ficha. Os casos foram construídos para
-        gerar diferentes tensões entre relevância ambiental, benefício social,
-        conservação, necessidade de intervenção e exigências administrativas.
-      </p>
-
-      <div class="groups">
-        <details class="group">
-          <summary>1. RPPN Nascente do Cedro</summary>
-          <div class="group-body">
-            <span class="tag">Agricultura familiar</span>
-            <span class="tag">2 nascentes perenes</span>
-            <ul>
-              <li>RPPN oficialmente reconhecida.</li>
-              <li>Nascentes alimentam curso d'água usado no abastecimento municipal.</li>
-              <li>Vegetação muito bem conservada.</li>
-              <li>Ligação entre dois fragmentos de mata.</li>
-              <li>Problemas: entrada ocasional de gado e risco de incêndio.</li>
-              <li>PSA: cercamento, prevenção de incêndios e recuperação de trecho degradado.</li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="group">
-          <summary>2. RPPN Mata da Serra</summary>
-          <div class="group-body">
-            <span class="tag">Organização ambiental</span>
-            <span class="tag">250 famílias</span>
-            <ul>
-              <li>RPPN oficialmente reconhecida.</li>
-              <li>Uma nascente perene.</li>
-              <li>Microbacia abastece aproximadamente 250 famílias.</li>
-              <li>Vegetação praticamente toda preservada.</li>
-              <li>Adjacente a outra área protegida e conectada a grandes fragmentos.</li>
-              <li>PSA: manutenção de monitoramento, vigilância e conservação.</li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="group">
-          <summary>3. RPPN Vale das Andorinhas</summary>
-          <div class="group-body">
-            <span class="tag">Turismo rural</span>
-            <span class="tag">180 famílias + escola</span>
-            <ul>
-              <li>RPPN oficialmente reconhecida.</li>
-              <li>Duas nascentes perenes.</li>
-              <li>Água utilizada por cerca de 180 famílias e uma escola rural.</li>
-              <li>Vegetação parcialmente preservada.</li>
-              <li>Alguma ligação com outros fragmentos.</li>
-              <li>PSA: reorganização de trilhas, restauração e prevenção de incêndios.</li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="group">
-          <summary>4. RPPN Fazenda Boa Vista</summary>
-          <div class="group-body">
-            <span class="tag">Grande empresa agrícola</span>
-            <span class="tag">20 famílias vizinhas</span>
-            <ul>
-              <li>RPPN oficialmente reconhecida.</li>
-              <li>Uma nascente perene.</li>
-              <li>Água utilizada na propriedade e por cerca de 20 famílias vizinhas.</li>
-              <li>Vegetação muito bem conservada.</li>
-              <li>Conecta dois fragmentos de mata.</li>
-              <li>PSA: controle de invasoras e novas medidas contra incêndio.</li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="group">
-          <summary>5. RPPN Sítio Esperança</summary>
-          <div class="group-body">
-            <span class="tag">Pequena propriedade</span>
-            <span class="tag">Área degradada</span>
-            <ul>
-              <li>RPPN oficialmente reconhecida.</li>
-              <li>Uma nascente perene.</li>
-              <li>Água utilizada pela família e propriedades vizinhas.</li>
-              <li>Vegetação parcialmente degradada.</li>
-              <li>Problemas: erosão e entrada de animais.</li>
-              <li>PSA: cercamento, restauração da vegetação e controle da erosão.</li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="group">
-          <summary>6. RPPN Pedra Branca</summary>
-          <div class="group-body">
-            <span class="tag">Nascente sazonal</span>
-            <span class="tag">Projeto pouco detalhado</span>
-            <ul>
-              <li>RPPN oficialmente reconhecida.</li>
-              <li>Nascente com água apenas durante parte do ano.</li>
-              <li>Uso da água basicamente dentro da propriedade.</li>
-              <li>Alguma vegetação nativa, mas fragmento relativamente isolado.</li>
-              <li>Presença ocasional de pessoas e espécies invasoras.</li>
-              <li>Proposta de uso do PSA sem detalhamento de ações.</li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="group">
-          <summary>7. Fazenda Horizonte</summary>
-          <div class="group-body">
-            <span class="tag">Referência ambiental</span>
-            <span class="tag">Caso-surpresa</span>
-            <ul>
-              <li>Duas nascentes perenes ligadas ao abastecimento público.</li>
-              <li>Vegetação muito bem preservada.</li>
-              <li>Conecta dois importantes fragmentos de floresta.</li>
-              <li>Projeto detalhado de cercamento, recuperação e monitoramento.</li>
-              <li>Parceria com universidade.</li>
-              <li><strong>A propriedade ainda não foi oficialmente reconhecida como RPPN.</strong></li>
-            </ul>
-          </div>
-        </details>
-      </div>
-    </section>
-
-    <section id="resultado">
-      <div class="section-label">Construção do resultado</div>
-      <h2>Da impressão inicial ao resultado técnico</h2>
-
-      <div class="result-panel">
-        <p>
-          Na dinâmica, o resultado não foi apresentado como resposta pronta.
-          Ele foi construído em sala a partir das regras do edital.
+    <section class="slide active">
+      <div class="slide-inner">
+        <div class="kicker">Dinâmica participativa</div>
+        <h1>Quem deve receber pelo cuidado da água?</h1>
+        <p class="big">
+          Simulação de um edital de <span class="highlight">Pagamento por Serviços Ambientais</span>
+          para RPPNs com foco na proteção de nascentes.
         </p>
-
-        <div class="reveal-controls">
-          <button class="btn" style="background:var(--brand);color:white" onclick="revealResult()">
-            Revelar gabarito de referência
-          </button>
+        <div class="callout">
+          <strong>Papel do grupo mediador:</strong> representar a Fundação Florestal,
+          conduzir o edital, organizar as apresentações, aplicar os critérios e coordenar
+          a construção coletiva do resultado.
         </div>
+        <p class="presenter-note">Use ← e → para avançar. Os dados preenchidos ficam salvos neste navegador.</p>
+      </div>
+    </section>
 
-        <div id="resultContent" class="result-hidden" aria-live="polite">
-          <table class="ranking">
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Abertura</div>
+        <h2>Antes de começar: três ideias fundamentais</h2>
+        <div class="cards">
+          <div class="card"><div class="num">1</div><strong>RPPN</strong><p>Área privada destinada voluntariamente à conservação e reconhecida pelo poder público.</p></div>
+          <div class="card"><div class="num">2</div><strong>PSA</strong><p>Instrumento econômico para apoiar a manutenção ou melhoria de serviços ambientais de interesse coletivo.</p></div>
+          <div class="card"><div class="num">3</div><strong>Proteção de nascentes</strong><p>Relaciona água, vegetação, conectividade ecológica, ameaças e benefícios para a sociedade.</p></div>
+        </div>
+        <div class="callout"><strong>Hoje não vamos escolher “a melhor propriedade”.</strong> Vamos aplicar regras de um edital e observar como os critérios influenciam a decisão.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Edital fictício</div>
+        <h2>PSA/RPPN — Nascentes Protegidas</h2>
+        <p class="big">Existem <strong class="highlight">7 candidaturas</strong>, mas recursos para apenas <strong class="highlight">3 propostas</strong>.</p>
+        <div class="cards">
+          <div class="card"><strong>Etapa 1 · Habilitação</strong><p>A área está oficialmente reconhecida como RPPN?</p><p><strong>SIM:</strong> segue para classificação.<br><strong>NÃO:</strong> é inabilitada.</p></div>
+          <div class="card"><strong>Etapa 2 · Classificação</strong><p>Três critérios, cada um com notas de 0 a 2. Pontuação máxima: 6 pontos.</p></div>
+          <div class="card"><strong>Etapa 3 · Resultado</strong><p>As três maiores pontuações são convocadas. Empates seguem regras previamente definidas.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Critérios</div>
+        <h2>Como as propostas serão pontuadas?</h2>
+        <div class="criteria">
+          <div class="criterion">
+            <header>1. Importância da água</header>
+            <div class="row"><div class="badge">0</div><div>Benefício basicamente restrito à própria propriedade.</div></div>
+            <div class="row"><div class="badge">1</div><div>Beneficia propriedades vizinhas ou pequena comunidade.</div></div>
+            <div class="row"><div class="badge">2</div><div>Abastecimento comunitário, escola, serviço público ou manancial relevante.</div></div>
+          </div>
+          <div class="criterion">
+            <header>2. Importância ecológica</header>
+            <div class="row"><div class="badge">0</div><div>Pouca vegetação e área isolada.</div></div>
+            <div class="row"><div class="badge">1</div><div>Vegetação parcialmente conservada ou alguma conexão ecológica.</div></div>
+            <div class="row"><div class="badge">2</div><div>Vegetação bem conservada e conexão importante com fragmentos ou áreas protegidas.</div></div>
+          </div>
+          <div class="criterion">
+            <header>3. Ganho esperado com o PSA</header>
+            <div class="row"><div class="badge">0</div><div>Não fica claro o que o recurso modificaria.</div></div>
+            <div class="row"><div class="badge">1</div><div>Ajuda principalmente a manter uma situação já existente.</div></div>
+            <div class="row"><div class="badge">2</div><div>Há problema concreto e ação clara capaz de melhorar a proteção.</div></div>
+          </div>
+        </div>
+        <div class="rules"><strong>Desempate:</strong> 1º maior nota em importância da água; persistindo, 2º maior nota em importância ecológica.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Roteiro da atividade</div>
+        <h2>O que acontecerá em sala</h2>
+        <div class="timeline">
+          <div class="card"><div class="num">1</div><strong>Preparação</strong><p>Cada grupo lê sua ficha e prepara uma defesa de até 3 minutos.</p></div>
+          <div class="card"><div class="num">2</div><strong>Apresentações</strong><p>Sete candidaturas apresentam suas áreas e respondem uma pergunta técnica.</p></div>
+          <div class="card"><div class="num">3</div><strong>Predição</strong><p>A turma escolhe quais três acredita que serão selecionadas — antes da pontuação.</p></div>
+          <div class="card"><div class="num">4</div><strong>Habilitação</strong><p>Verificamos quem cumpre a exigência administrativa de RPPN.</p></div>
+          <div class="card"><div class="num">5</div><strong>Pontuação</strong><p>Construímos o gabarito ao vivo com base nas informações apresentadas.</p></div>
+          <div class="card"><div class="num">6</div><strong>Debate</strong><p>Comparamos percepção, resultado técnico e possíveis mudanças no edital.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Apresentações</div>
+        <h2>Rodada dos candidatos</h2>
+        <div class="timer-wrap">
+          <div class="candidate">
+            <div class="small">CANDIDATO EM APRESENTAÇÃO</div>
+            <div class="candidate-name" id="candidateName">RPPN Nascente do Cedro</div>
+            <p>Tempo sugerido: 3 minutos de apresentação + 1 minuto de pergunta.</p>
+            <div class="candidate-tabs" id="candidateTabs"></div>
+            <div class="form-grid" style="grid-template-columns:1fr 1fr;margin-top:18px">
+              <div class="field"><label>Pergunta técnica feita pela comissão</label><textarea id="questionNote" data-save="questionNote" placeholder="Digite aqui..."></textarea></div>
+              <div class="field"><label>Observação rápida da comissão</label><textarea id="presentationNote" data-save="presentationNote" placeholder="Ponto forte, dúvida, informação a conferir..."></textarea></div>
+            </div>
+          </div>
+          <div class="timer">
+            <div class="small" style="color:#546258">CRONÔMETRO</div>
+            <div class="clock" id="clock">03:00</div>
+            <div class="timer-controls">
+              <button class="primary" onclick="startTimer()">Iniciar</button>
+              <button class="secondary" onclick="pauseTimer()">Pausar</button>
+              <button class="secondary" onclick="resetTimer()">Reiniciar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Antes do resultado</div>
+        <h2>Predição da turma</h2>
+        <p class="big">Sem calcular as notas ainda: quais três propostas a turma acredita que serão selecionadas?</p>
+        <div class="prediction">
+          <div class="rank-box"><div class="rank-num">1º</div><select id="pred1" data-save="pred1"></select></div>
+          <div class="rank-box"><div class="rank-num">2º</div><select id="pred2" data-save="pred2"></select></div>
+          <div class="rank-box"><div class="rank-num">3º</div><select id="pred3" data-save="pred3"></select></div>
+        </div>
+        <div class="field" style="margin-top:18px"><label>Por que a turma escolheu essas propostas?</label><textarea id="predReason" data-save="predReason" placeholder="Registre os principais argumentos citados pela turma..."></textarea></div>
+      </div>
+    </section>
+
+    <section class="slide printable">
+      <div class="slide-inner">
+        <div class="kicker">Etapa de habilitação</div>
+        <h2>Quem pode seguir para a classificação?</h2>
+        <p>Preencha <strong>Sim</strong> ou <strong>Não</strong>. Só as candidaturas habilitadas entram no cálculo do ranking.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Candidatura</th><th>RPPN oficialmente reconhecida?</th><th>Situação</th></tr></thead>
+            <tbody id="eligibilityBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide printable">
+      <div class="slide-inner">
+        <div class="kicker">Construção do gabarito</div>
+        <h2>Pontuação ao vivo</h2>
+        <p>Definam as notas em sala, sempre justificando com as informações apresentadas pelos grupos.</p>
+        <div class="table-wrap">
+          <table>
             <thead>
               <tr>
-                <th>Proposta</th>
-                <th>Água</th>
-                <th>Ecológico</th>
-                <th>Ganho PSA</th>
-                <th>Total</th>
-                <th>Situação</th>
+                <th>Candidatura</th><th>Água</th><th>Ecológico</th><th>Ganho PSA</th><th>Total</th><th>Justificativa breve</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="winner">
-                <td>Nascente do Cedro</td><td>2</td><td>2</td><td>2</td><td>6</td><td>Selecionada</td>
-              </tr>
-              <tr class="winner">
-                <td>Mata da Serra</td><td>2</td><td>2</td><td>1</td><td>5</td><td>Selecionada</td>
-              </tr>
-              <tr class="winner">
-                <td>Vale das Andorinhas</td><td>2</td><td>1</td><td>2</td><td>5</td><td>Selecionada</td>
-              </tr>
-              <tr>
-                <td>Fazenda Boa Vista</td><td>1</td><td>2</td><td>2</td><td>5</td><td>Não selecionada após desempate</td>
-              </tr>
-              <tr>
-                <td>Sítio Esperança</td><td>1</td><td>1</td><td>2</td><td>4</td><td>Não selecionada</td>
-              </tr>
-              <tr>
-                <td>Pedra Branca</td><td>0</td><td>1</td><td>1</td><td>2</td><td>Não selecionada</td>
-              </tr>
-              <tr>
-                <td>Fazenda Horizonte</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="ineligible">Inabilitada</td>
-              </tr>
-            </tbody>
+            <tbody id="scoreBody"></tbody>
           </table>
-
-          <p class="small">
-            No empate de 5 pontos, a Fazenda Boa Vista ficou atrás por ter menor nota
-            em importância da água. Entre Mata da Serra e Vale das Andorinhas, o
-            segundo desempate favoreceu Mata da Serra pela maior importância ecológica.
-          </p>
         </div>
       </div>
     </section>
 
-    <section id="reflexao">
-      <div class="section-label">Fechamento crítico</div>
-      <h2>O que a atividade permite discutir</h2>
-
-      <div class="discussion">
-        <div class="question">
-          <strong>1.</strong> Uma proposta ambientalmente excelente pode ser excluída por não cumprir uma exigência administrativa?
+    <section class="slide printable">
+      <div class="slide-inner">
+        <div class="kicker">Resultado</div>
+        <h2>Ranking automático</h2>
+        <p>O sistema ordena apenas as propostas habilitadas. Nos empates: água primeiro, depois importância ecológica.</p>
+        <div id="rankingList" class="ranking-list"></div>
+        <div class="toolbar">
+          <button class="export-btn" onclick="exportCSV()">Exportar pontuação em CSV</button>
+          <button class="export-btn" onclick="copySummary()">Copiar resumo do resultado</button>
         </div>
-        <div class="question">
-          <strong>2.</strong> Uma área já bem conservada deveria receber recursos ou o PSA deveria priorizar locais onde a mudança pode ser maior?
-        </div>
-        <div class="question">
-          <strong>3.</strong> É adequado financiar uma grande empresa se ela atende melhor aos critérios ambientais definidos?
-        </div>
-        <div class="question">
-          <strong>4.</strong> O que mudaria se o edital incluísse vulnerabilidade socioeconômica do proprietário?
-        </div>
-        <div class="question">
-          <strong>5.</strong> Quanto maior o peso dado ao abastecimento humano, quais áreas passam a ser favorecidas?
-        </div>
-        <div class="question">
-          <strong>6.</strong> Critérios técnicos são neutros ou também expressam escolhas de política pública?
-        </div>
-      </div>
-
-      <div class="callout">
-        <strong>Síntese:</strong> alterar um critério não muda apenas a pontuação.
-        Pode mudar quem recebe o recurso e, portanto, a própria prioridade da política ambiental.
       </div>
     </section>
 
-    <section id="referencias">
-      <div class="section-label">Referências</div>
-      <h2>Base conceitual</h2>
-
-      <div class="reference">
-        BRASIL. <strong>Lei nº 9.985, de 18 de julho de 2000.</strong>
-        Institui o Sistema Nacional de Unidades de Conservação da Natureza e dá outras providências.
-        Brasília, DF, 2000.
-      </div>
-
-      <div class="reference">
-        SILVA, Fabio Leandro da et al.
-        <strong>Procedimentos para a obtenção do pagamento por serviços ambientais no âmbito da instituição de uma Reserva Particular do Patrimônio Natural.</strong>
-        <em>Extensão Rural</em>, Santa Maria, v. 23, n. 3, p. 120–137, jul./set. 2016.
-      </div>
-
-      <div class="reference">
-        SÃO PAULO (Estado).
-        <strong>Resolução SMA nº 89, de 18 de setembro de 2013.</strong>
-        Institui diretrizes para a execução do Projeto de Pagamento por Serviços Ambientais
-        para as Reservas Particulares do Patrimônio Natural – RPPN.
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Recurso</div>
+        <h2>Uma contestação por grupo</h2>
+        <div class="form-grid">
+          <div class="field">
+            <label>Grupo que apresentou recurso</label>
+            <select id="appealGroup" data-save="appealGroup"></select>
+          </div>
+          <div class="field">
+            <label>Critério contestado</label>
+            <select id="appealCriterion" data-save="appealCriterion">
+              <option value="">Selecione</option>
+              <option>Habilitação</option>
+              <option>Importância da água</option>
+              <option>Importância ecológica</option>
+              <option>Ganho esperado com o PSA</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Decisão da comissão</label>
+            <select id="appealDecision" data-save="appealDecision">
+              <option value="">Selecione</option>
+              <option>Recurso aceito</option>
+              <option>Recurso rejeitado</option>
+              <option>Nota revista parcialmente</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-top:16px"><label>Argumento e decisão fundamentada</label><textarea id="appealText" data-save="appealText" placeholder="Registre o argumento do grupo e a resposta da comissão..."></textarea></div>
       </div>
     </section>
-  </main>
 
-  <footer>
-    <div class="footer-inner">
-      <strong>Gestão Ambiental</strong>
-      <p>Dinâmica participativa sobre PSA, RPPN, proteção de nascentes e critérios de decisão pública.</p>
-      <p class="small" style="color:rgba(255,255,255,.72)">
-        Página em arquivo único: HTML, CSS e JavaScript incorporados.
-      </p>
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Agora vocês escrevem o edital</div>
+        <h2>Se pudéssemos mudar uma regra...</h2>
+        <p class="big">A turma pode propor uma alteração e discutir quem passaria a ser favorecido ou prejudicado.</p>
+        <div class="form-grid">
+          <div class="field"><label>Critério/regra que a turma mudaria</label><textarea id="changeRule" data-save="changeRule" placeholder="Ex.: incluir vulnerabilidade socioeconômica..."></textarea></div>
+          <div class="field"><label>Quem seria favorecido?</label><textarea id="favored" data-save="favored" placeholder="Grupo(s) ou tipo de propriedade..."></textarea></div>
+          <div class="field"><label>Quem poderia ser prejudicado?</label><textarea id="harmed" data-save="harmed" placeholder="Grupo(s) ou tipo de propriedade..."></textarea></div>
+        </div>
+        <div class="callout"><strong>Pergunta-chave:</strong> mudar um critério muda apenas a pontuação ou muda também a prioridade da política pública?</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="kicker">Fechamento</div>
+        <h2>Para discutir com a turma</h2>
+        <div class="discussion">
+          <div class="q">A proposta mais convincente foi também a melhor classificada?</div>
+          <div class="q">Uma área já muito conservada deve receber recursos ou devemos priorizar onde o PSA produz maior mudança?</div>
+          <div class="q">É adequado financiar uma grande empresa se ela atende melhor aos critérios ambientais?</div>
+          <div class="q">Uma proposta ambientalmente excelente pode ser excluída por não cumprir uma regra administrativa?</div>
+          <div class="q">Os critérios técnicos são neutros?</div>
+          <div class="q">Quem define os critérios define também, em parte, os vencedores?</div>
+        </div>
+        <div class="callout"><strong>Síntese:</strong> um edital não apenas mede uma realidade. Ele organiza prioridades, distribui recursos e traduz escolhas de política pública.</div>
+      </div>
+    </section>
+
+    <div class="bottomnav">
+      <button class="navbtn" onclick="prevSlide()">← Anterior</button>
+      <div class="slide-counter" id="slideCounter">1 / 12</div>
+      <button class="navbtn" onclick="nextSlide()">Próximo →</button>
     </div>
-  </footer>
+  </div>
+</div>
 
-  <script>
-    function revealResult(){
-      const panel = document.getElementById("resultContent");
-      panel.classList.toggle("show");
-      const button = event.currentTarget;
-      button.textContent = panel.classList.contains("show")
-        ? "Ocultar gabarito de referência"
-        : "Revelar gabarito de referência";
+<script>
+const candidates = [
+  "RPPN Nascente do Cedro",
+  "RPPN Mata da Serra",
+  "RPPN Vale das Andorinhas",
+  "RPPN Fazenda Boa Vista",
+  "RPPN Sítio Esperança",
+  "RPPN Pedra Branca",
+  "Fazenda Horizonte"
+];
+
+const keyPrefix = "psa_rppn_mediador_v2_";
+let currentSlide = 0;
+const slides = [...document.querySelectorAll(".slide")];
+
+function showSlide(i){
+  currentSlide = Math.max(0, Math.min(slides.length-1, i));
+  slides.forEach((s,idx)=>s.classList.toggle("active", idx===currentSlide));
+  document.getElementById("slideCounter").textContent = `${currentSlide+1} / ${slides.length}`;
+  document.getElementById("progressBar").style.width = `${((currentSlide+1)/slides.length)*100}%`;
+}
+function nextSlide(){showSlide(currentSlide+1)}
+function prevSlide(){showSlide(currentSlide-1)}
+
+document.addEventListener("keydown", e=>{
+  if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) return;
+  if(e.key==="ArrowRight" || e.key==="PageDown") nextSlide();
+  if(e.key==="ArrowLeft" || e.key==="PageUp") prevSlide();
+});
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+function populateSelect(id, allowBlank=true){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.innerHTML = (allowBlank?'<option value="">Selecione</option>':'') +
+    candidates.map(c=>`<option>${c}</option>`).join("");
+}
+["pred1","pred2","pred3","appealGroup"].forEach(id=>populateSelect(id,true));
+
+const tabs=document.getElementById("candidateTabs");
+let currentCandidate=0;
+candidates.forEach((c,i)=>{
+  const b=document.createElement("button");
+  b.textContent=String(i+1);
+  b.title=c;
+  b.onclick=()=>setCandidate(i);
+  if(i===0)b.classList.add("active");
+  tabs.appendChild(b);
+});
+function setCandidate(i){
+  currentCandidate=i;
+  document.getElementById("candidateName").textContent=candidates[i];
+  [...tabs.children].forEach((b,idx)=>b.classList.toggle("active",idx===i));
+  loadCandidateNotes();
+  resetTimer();
+}
+
+let timeLeft=180, timerId=null;
+function renderClock(){
+  const m=Math.floor(timeLeft/60).toString().padStart(2,"0");
+  const s=(timeLeft%60).toString().padStart(2,"0");
+  document.getElementById("clock").textContent=`${m}:${s}`;
+}
+function startTimer(){
+  if(timerId) return;
+  timerId=setInterval(()=>{
+    if(timeLeft>0){timeLeft--;renderClock()}
+    else{clearInterval(timerId);timerId=null}
+  },1000);
+}
+function pauseTimer(){clearInterval(timerId);timerId=null}
+function resetTimer(){pauseTimer();timeLeft=180;renderClock()}
+
+function makeScoreSelect(id){
+  return `<select id="${id}" data-save="${id}">
+    <option value="">—</option><option value="0">0</option><option value="1">1</option><option value="2">2</option>
+  </select>`;
+}
+function makeEligSelect(id){
+  return `<select id="${id}" data-save="${id}">
+    <option value="">—</option><option value="Sim">Sim</option><option value="Não">Não</option>
+  </select>`;
+}
+
+const eb=document.getElementById("eligibilityBody");
+const sb=document.getElementById("scoreBody");
+
+candidates.forEach((c,i)=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`<td><strong>${c}</strong></td>
+    <td>${makeEligSelect("elig_"+i)}</td>
+    <td id="eligStatus_${i}" class="small">Aguardando</td>`;
+  eb.appendChild(tr);
+
+  const sr=document.createElement("tr");
+  sr.innerHTML=`<td><strong>${c}</strong></td>
+    <td>${makeScoreSelect("water_"+i)}</td>
+    <td>${makeScoreSelect("eco_"+i)}</td>
+    <td>${makeScoreSelect("gain_"+i)}</td>
+    <td id="total_${i}" class="total">—</td>
+    <td><input id="why_${i}" data-save="why_${i}" placeholder="Justificativa breve"></td>`;
+  sb.appendChild(sr);
+});
+
+function updateAll(){
+  candidates.forEach((c,i)=>{
+    const elig=document.getElementById("elig_"+i).value;
+    const status=document.getElementById("eligStatus_"+i);
+    status.textContent = elig==="Sim" ? "Habilitada" : elig==="Não" ? "Inabilitada" : "Aguardando";
+    status.className = elig==="Sim" ? "status-ok" : elig==="Não" ? "status-no" : "small";
+
+    const w=document.getElementById("water_"+i);
+    const e=document.getElementById("eco_"+i);
+    const g=document.getElementById("gain_"+i);
+    const disabled = elig!=="Sim";
+    [w,e,g].forEach(x=>x.disabled=disabled);
+
+    if(elig==="Sim" && w.value!=="" && e.value!=="" && g.value!==""){
+      document.getElementById("total_"+i).textContent=Number(w.value)+Number(e.value)+Number(g.value);
+    } else {
+      document.getElementById("total_"+i).textContent= elig==="Não" ? "—" : "—";
     }
-  </script>
+  });
+  renderRanking();
+  autoSave();
+}
+
+function renderRanking(){
+  const list=document.getElementById("rankingList");
+  const rows=[];
+  candidates.forEach((c,i)=>{
+    if(document.getElementById("elig_"+i).value!=="Sim") return;
+    const vals=["water_","eco_","gain_"].map(p=>document.getElementById(p+i).value);
+    if(vals.some(v=>v==="")) return;
+    rows.push({
+      name:c,
+      water:Number(vals[0]),
+      eco:Number(vals[1]),
+      gain:Number(vals[2]),
+      total:vals.reduce((a,v)=>a+Number(v),0)
+    });
+  });
+  rows.sort((a,b)=> b.total-a.total || b.water-a.water || b.eco-a.eco || a.name.localeCompare(b.name));
+  if(!rows.length){
+    list.innerHTML='<div class="card"><p>Preencha habilitação e pontuações para gerar o ranking.</p></div>';
+    return;
+  }
+  list.innerHTML=rows.map((r,idx)=>{
+    const selected=idx<3;
+    return `<div class="rank-row">
+      <div class="place">${idx+1}º</div>
+      <div><strong>${r.name}</strong><div class="small">Água ${r.water} · Ecológico ${r.eco} · Ganho PSA ${r.gain}</div></div>
+      <div class="points">${r.total} pts</div>
+      <div class="rank-status ${selected?'status-ok':''}">${selected?'Selecionada':'Não selecionada'}</div>
+    </div>`;
+  }).join("");
+}
+
+document.addEventListener("change", e=>{
+  if(e.target.matches("[data-save]")) { saveField(e.target); updateAll(); }
+});
+document.addEventListener("input", e=>{
+  if(e.target.matches("[data-save]")) saveField(e.target);
+});
+
+function saveField(el){localStorage.setItem(keyPrefix+el.dataset.save, el.value)}
+function autoSave(){
+  document.querySelectorAll("[data-save]").forEach(saveField);
+}
+function saveNow(){
+  autoSave();
+  const old=document.title;
+  document.title="Dados salvos ✓";
+  setTimeout(()=>document.title=old,900);
+}
+function restore(){
+  document.querySelectorAll("[data-save]").forEach(el=>{
+    const v=localStorage.getItem(keyPrefix+el.dataset.save);
+    if(v!==null) el.value=v;
+  });
+  loadCandidateNotes();
+  updateAll();
+}
+function resetAll(){
+  if(!confirm("Apagar todos os dados preenchidos nesta apresentação?")) return;
+  Object.keys(localStorage).filter(k=>k.startsWith(keyPrefix)).forEach(k=>localStorage.removeItem(k));
+  document.querySelectorAll("[data-save]").forEach(el=>el.value="");
+  updateAll();
+  loadCandidateNotes();
+}
+
+function noteKey(type){return keyPrefix+type+"_cand_"+currentCandidate}
+function loadCandidateNotes(){
+  const q=document.getElementById("questionNote");
+  const p=document.getElementById("presentationNote");
+  q.value=localStorage.getItem(noteKey("question"))||"";
+  p.value=localStorage.getItem(noteKey("presentation"))||"";
+}
+document.getElementById("questionNote").addEventListener("input",e=>localStorage.setItem(noteKey("question"),e.target.value));
+document.getElementById("presentationNote").addEventListener("input",e=>localStorage.setItem(noteKey("presentation"),e.target.value));
+
+function getRankingData(){
+  const rows=[];
+  candidates.forEach((c,i)=>{
+    const elig=document.getElementById("elig_"+i).value;
+    const w=document.getElementById("water_"+i).value;
+    const e=document.getElementById("eco_"+i).value;
+    const g=document.getElementById("gain_"+i).value;
+    rows.push({
+      name:c,elig,
+      water:w,eco:e,gain:g,
+      total:(elig==="Sim" && w!==""&&e!==""&&g!=="")?Number(w)+Number(e)+Number(g):"",
+      why:document.getElementById("why_"+i).value
+    });
+  });
+  return rows;
+}
+function exportCSV(){
+  const data=getRankingData();
+  const header=["Candidatura","Habilitação","Água","Ecológico","Ganho PSA","Total","Justificativa"];
+  const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+  const csv=[header,...data.map(r=>[r.name,r.elig,r.water,r.eco,r.gain,r.total,r.why])].map(row=>row.map(esc).join(";")).join("\n");
+  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="resultado_psa_rppn.csv";a.click();URL.revokeObjectURL(a.href);
+}
+function copySummary(){
+  const ranked=getRankingData()
+    .filter(r=>r.elig==="Sim" && r.total!=="")
+    .sort((a,b)=>b.total-a.total || Number(b.water)-Number(a.water) || Number(b.eco)-Number(a.eco));
+  const txt=ranked.map((r,i)=>`${i+1}º ${r.name} — ${r.total} pontos`).join("\n");
+  navigator.clipboard?.writeText(txt);
+  alert("Resumo copiado.");
+}
+
+restore();
+showSlide(0);
+renderClock();
+</script>
 </body>
 </html>
