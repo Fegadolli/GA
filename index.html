@@ -1,557 +1,118 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestão Ambiental — Dinâmica PSA/RPPN</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestão Ambiental - Dinâmica PSA/RPPN</title>
 <style>
-  :root{
-    --un-blue:#009edb;
-    --blue-dark:#006b99;
-    --black:#111;
-    --gray:#666;
-    --light:#f4f4f4;
-    --line:#d9d9d9;
-    --white:#fff;
-    --ok:#1f7a4d;
-    --danger:#b3261e;
-  }
-  *{box-sizing:border-box}
-  html,body{
-    margin:0;height:100%;overflow:hidden;
-    font-family:Roboto, Arial, Helvetica, sans-serif;
-    color:var(--black);background:var(--white);
-  }
-  button,select{font:inherit}
-  .app{height:100%;display:flex;flex-direction:column}
-  .top{
-    height:48px;background:#000;color:#fff;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:0 22px;font-size:.9rem;letter-spacing:.02em;
-  }
-  .top strong{font-weight:700}
-  .top-actions{display:flex;gap:8px}
-  .top button{
-    background:transparent;border:1px solid rgba(255,255,255,.35);
-    color:#fff;border-radius:3px;padding:6px 10px;cursor:pointer;
-  }
-  .bluebar{height:7px;background:var(--un-blue)}
-  .stage{flex:1;position:relative;overflow:hidden}
-  .slide{
-    position:absolute;inset:0;overflow:auto;
-    padding:5vh 7vw 90px;
-    opacity:0;pointer-events:none;transform:translateX(16px);
-    transition:.2s ease;
-  }
-  .slide.active{opacity:1;pointer-events:auto;transform:none}
-  .inner{max-width:1120px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;justify-content:center}
-  .label{
-    color:var(--blue-dark);text-transform:uppercase;letter-spacing:.11em;
-    font-size:.82rem;font-weight:700;margin-bottom:12px
-  }
-  h1{font-size:clamp(3rem,7vw,6.2rem);line-height:.95;margin:0 0 22px;font-weight:700}
-  h2{font-size:clamp(2.1rem,4.8vw,4.2rem);line-height:1.04;margin:0 0 24px}
-  h3{margin:0 0 8px;font-size:1.18rem}
-  p{font-size:1.12rem;line-height:1.5;color:var(--gray);max-width:860px}
-  .lead{font-size:clamp(1.2rem,2vw,1.65rem);color:#333}
-  .blue{color:var(--un-blue)}
-  .rule{
-    border-top:1px solid var(--line);margin:28px 0;
-  }
-  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
-  .card{
-    border-top:5px solid var(--un-blue);
-    background:var(--light);padding:22px;min-height:150px;
-  }
-  .card p{font-size:1rem;margin-bottom:0}
-  .steps{display:grid;gap:12px;margin-top:15px}
-  .step{
-    display:grid;grid-template-columns:54px 1fr;gap:18px;
-    align-items:start;border-top:1px solid var(--line);padding-top:15px;
-  }
-  .step-no{
-    width:42px;height:42px;background:var(--un-blue);color:white;
-    display:grid;place-items:center;font-size:1.1rem;font-weight:700;
-  }
-  .step p{margin:3px 0;font-size:1rem}
-  .present{
-    display:grid;grid-template-columns:1.4fr .6fr;gap:30px;align-items:center;
-  }
-  .candidate-box{border-left:8px solid var(--un-blue);padding:15px 0 15px 22px}
-  .candidate-name{font-size:clamp(2.4rem,5vw,4.7rem);font-weight:700;line-height:1}
-  .tabs{display:flex;gap:7px;margin-top:28px;flex-wrap:wrap}
-  .tabs button{
-    width:42px;height:42px;border:1px solid var(--line);background:#fff;cursor:pointer;
-  }
-  .tabs button.active{background:var(--un-blue);border-color:var(--un-blue);color:#fff}
-  .timer{
-    background:var(--light);padding:25px;text-align:center;border-top:5px solid #000;
-  }
-  .clock{font-size:clamp(3.7rem,8vw,6rem);font-weight:700;line-height:1}
-  .timer-actions{display:flex;gap:8px;justify-content:center;margin-top:18px}
-  .btn{
-    border:0;background:var(--un-blue);color:#fff;padding:10px 17px;
-    cursor:pointer;font-weight:700;border-radius:2px;
-  }
-  .btn.alt{background:#fff;color:#111;border:1px solid #aaa}
-  .btn:disabled{background:#bcbcbc;cursor:not-allowed}
-  .prediction{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:25px 0}
-  .pick{background:var(--light);padding:20px;border-top:5px solid var(--un-blue)}
-  .rank{font-size:2rem;font-weight:700;margin-bottom:12px}
-  select{
-    width:100%;padding:11px;border:1px solid #aaa;background:#fff;
-    color:#111;border-radius:0;
-  }
-  .confirm-area{
-    border-top:1px solid var(--line);padding-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap
-  }
-  .message{font-size:.95rem;color:var(--gray)}
-  .message.ok{color:var(--ok);font-weight:700}
-  .criteria{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:15px
-  }
-  .criterion{border-top:6px solid var(--un-blue);padding-top:16px}
-  .scoreline{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
-  .score-no{font-weight:700;color:var(--blue-dark)}
-  .table-wrap{overflow:auto;border-top:5px solid var(--un-blue)}
-  table{width:100%;border-collapse:collapse;min-width:780px}
-  th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left}
-  th{background:var(--light);font-size:.86rem}
-  td select{min-width:85px}
-  .total{font-weight:700;color:var(--blue-dark)}
-  .status-ok{color:var(--ok);font-weight:700}
-  .status-no{color:var(--danger);font-weight:700}
-  .ranking{display:grid;gap:8px;margin-top:15px}
-  .rankrow{
-    display:grid;grid-template-columns:70px 1fr 90px 160px;
-    gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:13px 4px;
-  }
-  .place{font-size:1.5rem;font-weight:700;color:var(--un-blue)}
-  .pts{font-weight:700}
-  .questions{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  .question{background:var(--light);padding:20px;border-left:5px solid var(--un-blue);font-size:1.12rem}
-  .footnav{
-    position:absolute;bottom:0;left:0;right:0;height:64px;background:#fff;
-    border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;
-  }
-  .navbtn{
-    border:0;background:none;color:#222;font-weight:700;cursor:pointer;padding:10px;
-  }
-  .counter{color:var(--gray);font-size:.9rem}
-  .locked{color:var(--danger);font-weight:700}
-  .note{font-size:.88rem;color:#777}
-  @media(max-width:850px){
-    .cards,.criteria,.prediction,.questions,.present{grid-template-columns:1fr}
-    .rankrow{grid-template-columns:50px 1fr 70px}
-    .rankstatus{grid-column:2/4}
-    .slide{padding:4vh 5vw 85px}
-  }
+:root{
+ --un:#009edb; --un-dark:#006b99; --black:#111; --gray:#666; --light:#f4f4f4;
+ --line:#d7d7d7; --white:#fff; --ok:#247a4b; --bad:#b3261e;
+}
+*{box-sizing:border-box} html,body{margin:0;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:var(--black);background:#fff}
+button,select{font:inherit}.app{height:100%;display:flex;flex-direction:column}
+.top{height:48px;background:#000;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:.9rem}
+.top button{color:#fff;background:transparent;border:1px solid #666;padding:6px 10px;cursor:pointer}.bluebar{height:7px;background:var(--un)}
+.stage{flex:1;position:relative;overflow:hidden}.slide{position:absolute;inset:0;padding:5vh 7vw 86px;overflow:auto;opacity:0;pointer-events:none;transform:translateX(14px);transition:.2s}
+.slide.active{opacity:1;pointer-events:auto;transform:none}.inner{max-width:1120px;margin:auto;min-height:100%;display:flex;flex-direction:column;justify-content:center}
+.label{color:var(--un-dark);text-transform:uppercase;letter-spacing:.11em;font-size:.82rem;font-weight:700;margin-bottom:12px}
+h1{font-size:clamp(3rem,7vw,6.2rem);line-height:.95;margin:0 0 22px}h2{font-size:clamp(2rem,4.7vw,4.1rem);line-height:1.04;margin:0 0 22px}h3{margin:0 0 8px}
+p{font-size:1.1rem;line-height:1.5;color:var(--gray);max-width:900px}.lead{font-size:clamp(1.2rem,2vw,1.6rem);color:#333}.blue{color:var(--un)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}.card{background:var(--light);border-top:5px solid var(--un);padding:22px;min-height:145px}.card p{font-size:1rem;margin-bottom:0}
+.steps{display:grid;gap:12px;margin-top:18px}.step{display:grid;grid-template-columns:52px 1fr;gap:16px;border-top:1px solid var(--line);padding-top:14px}.n{width:40px;height:40px;background:var(--un);color:#fff;display:grid;place-items:center;font-weight:700}.step p{font-size:1rem;margin:2px 0}
+.present{display:grid;grid-template-columns:1.4fr .6fr;gap:30px;align-items:center}.candidate{border-left:8px solid var(--un);padding:12px 0 12px 20px}.candname{font-size:clamp(2.4rem,5vw,4.7rem);font-weight:700;line-height:1}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-top:25px}.tabs button{width:42px;height:42px;border:1px solid var(--line);background:#fff;cursor:pointer}.tabs button.active{background:var(--un);color:#fff;border-color:var(--un)}
+.timer{background:var(--light);border-top:5px solid #000;padding:24px;text-align:center}.clock{font-size:clamp(3.7rem,8vw,6rem);font-weight:700}.actions{display:flex;gap:8px;justify-content:center;margin-top:16px}.btn{border:0;background:var(--un);color:#fff;padding:10px 16px;font-weight:700;cursor:pointer}.btn.alt{background:#fff;color:#111;border:1px solid #aaa}
+.prediction{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0}.pick{background:var(--light);border-top:5px solid var(--un);padding:20px}.rank{font-size:2rem;font-weight:700;margin-bottom:10px}select{width:100%;padding:10px;border:1px solid #999;background:#fff}.confirm{display:flex;gap:14px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}.msg{color:var(--gray);font-size:.95rem}.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
+.criteria{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px}.criterion{border-top:6px solid var(--un);padding-top:14px}.scoreline{display:grid;grid-template-columns:32px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.sno{font-weight:700;color:var(--un-dark)}
+.tablewrap{overflow:auto;border-top:5px solid var(--un)}table{border-collapse:collapse;width:100%;min-width:780px}th,td{padding:11px;border-bottom:1px solid var(--line);text-align:left}th{background:var(--light);font-size:.85rem}td select{min-width:80px}.total{font-weight:700;color:var(--un-dark)}.status-ok{color:var(--ok);font-weight:700}.status-no{color:var(--bad);font-weight:700}
+.subtabs{display:flex;gap:2px;margin:0 0 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}.subtabs button{border:0;background:#fff;padding:12px 18px;cursor:pointer;border-bottom:4px solid transparent;font-weight:700}.subtabs button.active{border-bottom-color:var(--un);color:var(--un-dark)}.tabpane{display:none}.tabpane.active{display:block}.objective{border-left:6px solid var(--un);background:#eef8fc;padding:15px 18px;margin:0 0 18px}.objective strong{color:var(--un-dark)}.proposalnav{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 16px}.proposalnav button{border:1px solid var(--line);background:#fff;padding:8px 11px;cursor:pointer;font-weight:700}.proposalnav button.active{background:var(--un);color:#fff;border-color:var(--un)}.proposalcard{border-top:6px solid var(--un);background:#fff}.proposalhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:4px 0 14px;border-bottom:1px solid var(--line)}.proposalhead h3{font-size:1.35rem}.statuspill{background:var(--light);padding:7px 10px;font-size:.86rem;font-weight:700;white-space:nowrap}.factgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.fact{background:var(--light);padding:15px}.facttitle{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--un-dark);font-weight:700;margin-bottom:6px}.fact p{font-size:.96rem;margin:0;color:#333}
+.ranking{display:grid;gap:8px}.rankrow{display:grid;grid-template-columns:65px 1fr 90px 155px;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:12px 4px}.place{font-size:1.45rem;font-weight:700;color:var(--un)}.pts{font-weight:700}.note{font-size:.88rem;color:#777}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}.questions{display:grid;grid-template-columns:1fr 1fr;gap:18px}.question{background:var(--light);border-left:5px solid var(--un);padding:20px;font-size:1.1rem}
+.foot{position:absolute;left:0;right:0;bottom:0;height:62px;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px}.nav{border:0;background:none;font-weight:700;cursor:pointer}.counter{font-size:.9rem;color:var(--gray)}
+@media(max-width:850px){.cards,.criteria,.prediction,.present,.compare,.questions,.factgrid{grid-template-columns:1fr}.rankrow{grid-template-columns:50px 1fr 70px}.rankstatus{grid-column:2/4}.slide{padding:4vh 5vw 82px}.proposalhead{display:block}.statuspill{display:inline-block;margin-top:8px}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="top">
-    <strong>GESTÃO AMBIENTAL</strong>
-    <div class="top-actions">
-      <button onclick="toggleFullscreen()">Tela cheia</button>
-      <button onclick="clearData()">Limpar</button>
-    </div>
-  </header>
-  <div class="bluebar"></div>
-
-  <main class="stage">
-    <!-- 1 -->
-    <section class="slide active">
-      <div class="inner">
-        <div class="label">Dinâmica participativa</div>
-        <h1>Quem deve receber pelo <span class="blue">cuidado da água?</span></h1>
-        <p class="lead">Simulação de um edital de Pagamento por Serviços Ambientais para RPPNs voltado à proteção de nascentes.</p>
-        <div class="rule"></div>
-        <p><strong>Grupo mediador:</strong> Fundação Florestal</p>
-      </div>
-    </section>
-
-    <!-- 2 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Antes de começar</div>
-        <h2>Três ideias para orientar a atividade</h2>
-        <div class="cards">
-          <div class="card"><h3>RPPN</h3><p>Área privada destinada voluntariamente à conservação e reconhecida pelo poder público.</p></div>
-          <div class="card"><h3>PSA</h3><p>Pagamento que apoia a manutenção ou melhoria de serviços ambientais de interesse coletivo.</p></div>
-          <div class="card"><h3>Nascentes</h3><p>A proteção da água envolve vegetação, conectividade, ameaças e benefícios para a sociedade.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">O edital</div>
-        <h2>7 candidaturas. <span class="blue">3 serão selecionadas.</span></h2>
-        <p class="lead">Cada grupo receberá uma situação diferente e terá até 3 minutos para apresentar sua candidatura.</p>
-        <div class="steps">
-          <div class="step"><div class="step-no">1</div><div><h3>Apresentações</h3><p>Ouça os sete grupos.</p></div></div>
-          <div class="step"><div class="step-no">2</div><div><h3>Suposição da turma</h3><p>Antes de conhecer os critérios, a turma indicará quais três acredita que serão selecionados.</p></div></div>
-          <div class="step"><div class="step-no">3</div><div><h3>Critérios e decisão</h3><p>Somente depois da suposição, os critérios técnicos serão revelados e aplicados.</p></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Apresentações</div>
-        <div class="present">
-          <div>
-            <div class="candidate-box">
-              <div class="note">CANDIDATURA EM APRESENTAÇÃO</div>
-              <div class="candidate-name" id="candidateName">RPPN Nascente do Cedro</div>
-            </div>
-            <div class="tabs" id="tabs"></div>
-          </div>
-          <div class="timer">
-            <div class="note">TEMPO</div>
-            <div class="clock" id="clock">03:00</div>
-            <div class="timer-actions">
-              <button class="btn" onclick="startTimer()">Iniciar</button>
-              <button class="btn alt" onclick="pauseTimer()">Pausar</button>
-              <button class="btn alt" onclick="resetTimer()">Reiniciar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5 -->
-    <section class="slide" id="predictionSlide">
-      <div class="inner">
-        <div class="label">Antes dos critérios</div>
-        <h2>Qual é a suposição da turma?</h2>
-        <p class="lead">Escolham as três candidaturas que vocês acreditam que serão selecionadas.</p>
-        <div class="prediction">
-          <div class="pick"><div class="rank">1º</div><select id="pred1"></select></div>
-          <div class="pick"><div class="rank">2º</div><select id="pred2"></select></div>
-          <div class="pick"><div class="rank">3º</div><select id="pred3"></select></div>
-        </div>
-        <div class="confirm-area">
-          <button id="confirmPrediction" class="btn" onclick="confirmPrediction()">Confirmar suposição</button>
-          <span id="predictionMsg" class="message">Selecione três candidaturas diferentes.</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Agora os critérios são revelados</div>
-        <h2>Primeiro: habilitação</h2>
-        <p class="lead">A área está oficialmente reconhecida como RPPN?</p>
-        <div class="cards" style="grid-template-columns:1fr 1fr">
-          <div class="card"><h3>SIM</h3><p>A candidatura segue para a etapa de classificação.</p></div>
-          <div class="card" style="border-top-color:#111"><h3>NÃO</h3><p>A candidatura é inabilitada e não recebe pontuação.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Classificação</div>
-        <h2>Três critérios simples</h2>
-        <div class="criteria">
-          <div class="criterion">
-            <h3>1. Importância da água</h3>
-            <div class="scoreline"><div class="score-no">0</div><div>Uso restrito à propriedade.</div></div>
-            <div class="scoreline"><div class="score-no">1</div><div>Beneficia vizinhos ou pequena comunidade.</div></div>
-            <div class="scoreline"><div class="score-no">2</div><div>Abastecimento comunitário, escola, serviço público ou manancial relevante.</div></div>
-          </div>
-          <div class="criterion">
-            <h3>2. Importância ecológica</h3>
-            <div class="scoreline"><div class="score-no">0</div><div>Pouca vegetação e área isolada.</div></div>
-            <div class="scoreline"><div class="score-no">1</div><div>Vegetação parcial ou alguma conexão.</div></div>
-            <div class="scoreline"><div class="score-no">2</div><div>Vegetação bem conservada e conexão importante.</div></div>
-          </div>
-          <div class="criterion">
-            <h3>3. Ganho com o PSA</h3>
-            <div class="scoreline"><div class="score-no">0</div><div>Não está claro o que mudaria.</div></div>
-            <div class="scoreline"><div class="score-no">1</div><div>Principalmente manutenção do que já existe.</div></div>
-            <div class="scoreline"><div class="score-no">2</div><div>Problema concreto + ação capaz de melhorar a proteção.</div></div>
-          </div>
-        </div>
-        <p class="note" style="margin-top:22px"><strong>Desempate:</strong> maior nota em importância da água; depois, maior nota em importância ecológica.</p>
-      </div>
-    </section>
-
-    <!-- 8 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Construção coletiva</div>
-        <h2>1. Habilitação</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Candidatura</th><th>RPPN reconhecida?</th><th>Situação</th></tr></thead>
-            <tbody id="eligBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- 9 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Construção coletiva</div>
-        <h2>2. Pontuação</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Candidatura</th><th>Água</th><th>Ecológico</th><th>Ganho PSA</th><th>Total</th></tr></thead>
-            <tbody id="scoreBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Resultado</div>
-        <h2>Ranking da seleção</h2>
-        <div id="ranking" class="ranking"></div>
-      </div>
-    </section>
-
-    <!-- 11 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Comparação</div>
-        <h2>Suposição × resultado</h2>
-        <div class="cards">
-          <div class="card">
-            <h3>Suposição da turma</h3>
-            <div id="predictionSummary"></div>
-          </div>
-          <div class="card" style="grid-column:span 2">
-            <h3>Resultado técnico</h3>
-            <div id="technicalSummary"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 12 -->
-    <section class="slide">
-      <div class="inner">
-        <div class="label">Fechamento</div>
-        <h2>O que o resultado nos faz discutir?</h2>
-        <div class="questions">
-          <div class="question">A proposta que parecia melhor foi a melhor classificada?</div>
-          <div class="question">Uma área já conservada deve receber PSA ou devemos priorizar onde o recurso pode produzir maior mudança?</div>
-          <div class="question">Uma excelente proposta ambiental pode ser excluída por não cumprir uma exigência administrativa?</div>
-          <div class="question">Quando mudamos um critério, mudamos apenas a pontuação ou também a política pública?</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="footnav">
-      <button class="navbtn" onclick="prevSlide()">← Anterior</button>
-      <div class="counter" id="counter">1 / 12</div>
-      <button class="navbtn" onclick="nextSlide()">Próximo →</button>
-    </div>
-  </main>
+<header class="top"><strong>GESTÃO AMBIENTAL · GRUPO MEDIADOR</strong><div><button onclick="toggleFull()">Tela cheia</button> <button onclick="clearData()">Limpar</button></div></header>
+<div class="bluebar"></div>
+<main class="stage">
+<section class="slide active"><div class="inner"><div class="label">Dinâmica participativa</div><h1>Quem deve receber pelo <span class="blue">cuidado da água?</span></h1><p class="lead">Chamada Pública de Pagamento por Serviços Ambientais para RPPNs com proteção de nascentes.</p><p><strong>Grupo mediador:</strong> Fundação Florestal</p></div></section>
+<section class="slide"><div class="inner"><div class="label">Abertura</div><h2>Três conceitos para situar a atividade</h2><div class="cards"><div class="card"><h3>RPPN</h3><p>Reserva Particular do Patrimônio Natural: área privada destinada voluntariamente à conservação e reconhecida pelo poder público.</p></div><div class="card"><h3>PSA</h3><p>Pagamento por Serviços Ambientais: instrumento econômico que reconhece e remunera, sob condições previamente estabelecidas, ações de manutenção, recuperação ou incremento de serviços ecossistêmicos de interesse coletivo.</p></div><div class="card"><h3>Nascentes</h3><p>A nascente não é analisada isoladamente: importa saber para onde sua água escoa, quem a utiliza a jusante e como a vegetação contribui para sua proteção.</p></div></div><div class="objective"><strong>Nesta dinâmica:</strong> o PSA está vinculado à execução de uma intervenção ambiental verificável. Não constitui prêmio pela simples existência de uma área protegida nem recompensa automática pela conservação já realizada.</div></div></section>
+<section class="slide"><div class="inner">
+<div class="label">Chamada Pública FF/PSA-RPPN nº 01/2026</div>
+<h2>Nascentes Protegidas <span class="blue">· inscrições abertas</span></h2>
+<p class="lead"><strong>Sua RPPN protege uma nascente e possui uma intervenção ambiental que precisa de apoio para ser executada?</strong> Apresente sua proposta à Fundação Florestal.</p>
+<div class="cards">
+<div class="card"><h3>Quem pode se inscrever?</h3><p>Proprietários ou gestores responsáveis por RPPNs formalmente reconhecidas.</p></div>
+<div class="card"><h3>O que será apoiado?</h3><p>Ações de proteção de nascentes, recuperação de vegetação, controle de erosão ou invasoras, prevenção de incêndios e outras intervenções diretamente relacionadas à ganho ambiental.</p></div>
+<div class="card"><h3>Quanto tempo?</h3><p>As ações propostas deverão ser executadas ao longo de <strong>12 meses</strong>, contados a partir da contratação.</p></div>
 </div>
+<div class="objective"><strong>Objeto da chamada:</strong> selecionar três propostas de RPPNs para recebimento de PSA destinado à execução de ações de proteção de nascentes e à manutenção, recuperação ou incremento dos serviços ecossistêmicos associados à água, à vegetação nativa e à conectividade ecológica.</div>
 
+
+</div></section>
+<section class="slide"><div class="inner"><div class="label">Como funcionará</div><h2>7 candidaturas. <span class="blue">3 selecionadas.</span></h2><div class="steps"><div class="step"><div class="n">1</div><div><h3>Apresentações</h3><p>Cada grupo apresenta sua proposta em até 3 minutos, como candidato interessado em obter apoio para uma intervenção de 12 meses.</p></div></div><div class="step"><div class="n">2</div><div><h3>Suposição da turma</h3><p>A turma escolhe três candidaturas antes de conhecer as regras da seleção.</p></div></div><div class="step"><div class="n">3</div><div><h3>Regras e pontuação</h3><p>Somente depois da suposição serão reveladas a habilitação e a matriz de pontuação.</p></div></div><div class="step"><div class="n">4</div><div><h3>Resultado</h3><p>Comparamos a suposição inicial com o ranking técnico.</p></div></div></div></div></section>
+<section class="slide"><div class="inner"><div class="label">Apresentações</div><div class="present"><div><div class="candidate"><div class="note">CANDIDATURA EM APRESENTAÇÃO</div><div class="candname" id="candname">RPPN Nascente do Cedro</div></div><div class="tabs" id="candtabs"></div></div><div class="timer"><div class="note">TEMPO</div><div class="clock" id="clock">03:00</div><div class="actions"><button class="btn" onclick="startTimer()">Iniciar</button><button class="btn alt" onclick="pauseTimer()">Pausar</button><button class="btn alt" onclick="resetTimer()">Reiniciar</button></div></div></div></div></section>
+<section class="slide"><div class="inner"><div class="label">Antes de conhecer os critérios</div><h2>Qual é a suposição da turma?</h2><p class="lead">Escolham as três candidaturas que vocês acreditam que serão selecionadas.</p><div class="prediction"><div class="pick"><div class="rank">1º</div><select id="pred1"></select></div><div class="pick"><div class="rank">2º</div><select id="pred2"></select></div><div class="pick"><div class="rank">3º</div><select id="pred3"></select></div></div><div class="confirm"><button class="btn" onclick="confirmPrediction()">Confirmar suposição</button><span class="msg" id="predmsg">Selecione três candidaturas diferentes.</span></div></div></section>
+<section class="slide"><div class="inner"><div class="label">Critérios revelados</div><h2>1. Habilitação</h2><p class="lead">A área está oficialmente reconhecida como RPPN?</p><div class="cards" style="grid-template-columns:1fr 1fr"><div class="card"><h3>SIM</h3><p>Segue para a classificação.</p></div><div class="card" style="border-top-color:#111"><h3>NÃO</h3><p>É inabilitada e não recebe pontuação.</p></div></div></div></section>
+<section class="slide"><div class="inner"><div class="label">Critérios revelados</div><h2>2. Classificação</h2><div class="criteria"><div class="criterion"><h3>Importância da água</h3><div class="scoreline"><div class="sno">0</div><div>Água permanece na propriedade; sem captação externa.</div></div><div class="scoreline"><div class="sno">1</div><div>Córrego/ rio com captação direta por vizinhos ou pequeno grupo local; sem sistema coletivo.</div></div><div class="scoreline"><div class="sno">2</div><div>Contribui para captação comunitária/institucional ou para rio/reservatório de abastecimento público.</div></div></div><div class="criterion"><h3>Importância ecológica</h3><div class="scoreline"><div class="sno">0</div><div>&lt;50% de vegetação na faixa de 50 m e sem conexão com outro fragmento.</div></div><div class="scoreline"><div class="sno">1</div><div>50-79% de vegetação OU conexão direta com um fragmento.</div></div><div class="scoreline"><div class="sno">2</div><div>≥80% de vegetação E conexão entre dois fragmentos ou contiguidade com área protegida.</div></div></div><div class="criterion"><h3>Adicionalidade do PSA</h3><div class="scoreline"><div class="sno">0</div><div>Sem ação específica ligada a problema atual.</div></div><div class="scoreline"><div class="sno">1</div><div>O recurso mantém ações que já são realizadas; o acréscimo em relação à situação atual é limitado.</div></div><div class="scoreline"><div class="sno">2</div><div>Problema atual + ação específica e verificável + execução integral dependente do PSA.</div></div></div></div><p class="note"><strong>Desempate:</strong> maior nota em água; depois, maior nota ecológica.</p></div></section>
+<section class="slide"><div class="inner"><div class="label">Construção coletiva</div><h2>Habilitação</h2><div class="tablewrap"><table><thead><tr><th>Candidatura</th><th>RPPN reconhecida?</th><th>Situação</th></tr></thead><tbody id="eligbody"></tbody></table></div></div></section>
+<section class="slide"><div class="inner"><div class="label">Construção coletiva</div><h2>Pontuação</h2><div class="objective"><strong>Objetivo do edital “Nascentes Protegidas”:</strong> viabilizar ganhos ambientais concretos cuja execução dependa do PSA. Use as abas abaixo para pontuar, conferir a matriz e consultar os dados objetivos das sete propostas.</div><div class="subtabs"><button class="active" id="tabScoreBtn" onclick="showSubtab('score')">Pontuação</button><button id="tabCritBtn" onclick="showSubtab('criteria')">Conferir critérios</button><button id="tabFilesBtn" onclick="showSubtab('files')">Fichas das propostas</button></div><div class="tabpane active" id="scorePane"><div class="tablewrap"><table><thead><tr><th>Candidatura</th><th>Água</th><th>Ecológico</th><th>Adicionalidade do PSA</th><th>Total</th></tr></thead><tbody id="scorebody"></tbody></table></div></div><div class="tabpane" id="criteriaPane"><div class="criteria"><div class="criterion"><h3>Água</h3><div class="scoreline"><div class="sno">0</div><div>Sem captação externa.</div></div><div class="scoreline"><div class="sno">1</div><div>Captação direta por vizinhos/pequeno grupo; sem sistema coletivo.</div></div><div class="scoreline"><div class="sno">2</div><div>Captação coletiva/institucional ou abastecimento público.</div></div></div><div class="criterion"><h3>Ecológico</h3><div class="scoreline"><div class="sno">0</div><div>&lt;50% e sem conexão.</div></div><div class="scoreline"><div class="sno">1</div><div>50-79% OU conexão com um fragmento.</div></div><div class="scoreline"><div class="sno">2</div><div>≥80% E conexão de dois fragmentos/área protegida.</div></div></div><div class="criterion"><h3>Adicionalidade do PSA</h3><div class="scoreline"><div class="sno">0</div><div>Sem ação específica verificável ligada a um problema atual.</div></div><div class="scoreline"><div class="sno">1</div><div>O recurso mantém ações que já são realizadas; adicionalidade limitada.</div></div><div class="scoreline"><div class="sno">2</div><div>Problema atual + ação específica e verificável + execução integral dependente do PSA.</div></div></div></div><p class="note"><strong>Desempate:</strong> água; depois ecológico.</p></div><div class="tabpane" id="filesPane"><div class="proposalnav" id="proposalNav"></div><div class="proposalcard" id="proposalCard"></div></div></div></section>
+<section class="slide"><div class="inner"><div class="label">Resultado</div><h2>Ranking</h2><div class="ranking" id="ranking"></div></div></section>
+<section class="slide"><div class="inner"><div class="label">Comparação</div><h2>Suposição × resultado</h2><div class="compare"><div class="card"><h3>Suposição da turma</h3><div id="predsummary"></div></div><div class="card"><h3>Resultado técnico</h3><div id="techsummary"></div></div></div></div></section>
+<section class="slide"><div class="inner"><div class="label">Fechamento</div><h2>O que discutir?</h2><div class="questions"><div class="question">A proposta que parecia mais adequada foi a classificada em primeiro lugar?</div><div class="question">Uma área já conservada deve receber o PSA? Ou devemos priorizar áreas degradadas?</div><div class="question">Uma proposta ambientalmente excelente pode ser excluída por não cumprir uma exigência administrativa?</div><div class="question">Quando mudamos um critério, mudamos apenas a pontuação ou também a política pública?</div></div></div></section>
+<div class="foot"><button class="nav" onclick="prevSlide()">← Anterior</button><div class="counter" id="counter">1 / 12</div><button class="nav" onclick="nextSlide()">Próximo →</button></div>
+</main>
+</div>
 <script>
-const candidates=[
-  "RPPN Nascente do Cedro",
-  "RPPN Mata da Serra",
-  "RPPN Vale das Andorinhas",
-  "RPPN Fazenda Boa Vista",
-  "RPPN Sítio Esperança",
-  "RPPN Pedra Branca",
-  "Fazenda Horizonte"
+const candidates=['RPPN Nascente do Cedro','RPPN Mata da Serra','RPPN Vale das Andorinhas','RPPN Fazenda Boa Vista','RPPN Sítio Esperança','RPPN Pedra Branca','Fazenda Horizonte'];
+const proposalFacts=[
+ {short:'Cedro',name:'RPPN Nascente do Cedro',status:'RPPN reconhecida',water:'Duas nascentes perenes formam o Córrego do Cedro. A 4 km, ele deságua no Rio das Palmeiras, onde há captação municipal que alimenta o reservatório público da cidade.',eco:'92% de vegetação nativa na faixa de 50 m. A RPPN forma corredor contínuo entre dois fragmentos florestais.',psa:'Há entrada de gado, risco de incêndio e 0,8 ha degradado. O PSA financiará cerca, restauração dos 0,8 ha e aceiros. Sem o PSA, a família manterá apenas os cuidados rotineiros e não executará integralmente as três ações com recursos próprios durante os 12 meses do projeto.'},
+ {short:'Mata da Serra',name:'RPPN Mata da Serra',status:'RPPN reconhecida',water:'Uma nascente perene forma tributário que deságua diretamente no Reservatório Santa Clara, usado por sistema comunitário formal que atende cerca de 250 famílias.',eco:'98% de vegetação nativa na faixa de 50 m. A RPPN é contígua a uma APA e conecta-se diretamente a um grande fragmento florestal.',psa:'A área está estável. O PSA manterá monitoramento trimestral, vigilância e aceiros que já são executados. Não há nova restauração prevista.'},
+ {short:'Andorinhas',name:'RPPN Vale das Andorinhas',status:'RPPN reconhecida',water:'Duas nascentes perenes formam o Córrego das Andorinhas. A 3 km, uma captação comunitária abastece cerca de 180 famílias e uma escola pública.',eco:'68% de vegetação nativa na faixa de 50 m. Há conexão direta com um fragmento a leste, mas não com o fragmento a oeste.',psa:'Há 1,6 ha degradados, risco de incêndio e trilha próxima à área úmida. O PSA financiará restauração, mudança da trilha e prevenção. Sem o PSA, a família não executará integralmente a restauração, o redirecionamento da trilha e as medidas preventivas durante os 12 meses do projeto.'},
+ {short:'Boa Vista',name:'RPPN Fazenda Boa Vista',status:'RPPN reconhecida',water:'Uma nascente perene forma o Córrego Boa Vista. Não há sistema coletivo; três propriedades e cerca de 20 famílias captam água diretamente a jusante.',eco:'95% de vegetação nativa na faixa de 50 m. A RPPN liga continuamente dois fragmentos de mata.',psa:'Há espécie invasora em cerca de 3 ha e risco de incêndio. O PSA financiará remoção da invasora e nova faixa preventiva; essas ações não estão previstas no orçamento ambiental ordinário para os 12 meses do projeto.'},
+ {short:'Esperança',name:'RPPN Sítio Esperança',status:'RPPN reconhecida',water:'Uma nascente perene forma o Córrego Esperança. Oito pequenas propriedades fazem captação direta a jusante; não há sistema público ou comunitário.',eco:'45% de vegetação nativa na faixa de 50 m. A vegetação remanescente encosta diretamente em um pequeno fragmento da propriedade vizinha.',psa:'Há erosão, acesso de animais e 1,4 ha com cobertura insuficiente. O PSA financiará cerca, estabilização da erosão e restauração. Sem o PSA, a família não consegue executar a restauração completa.'},
+ {short:'Pedra Branca',name:'RPPN Pedra Branca',status:'RPPN reconhecida',water:'Nascente sazonal. A água percorre cerca de 700 m e termina em açude dentro da propriedade, sem saída permanente nem captação externa.',eco:'58% de vegetação nativa na faixa de 50 m. O fragmento é isolado; o remanescente mais próximo está a cerca de 900 m.',psa:'Há visitantes e algumas plantas exóticas, mas a proposta apenas diz “promover ações de proteção e conservação”, sem ação, área ou problema diretamente definido.'},
+ {short:'Horizonte',name:'Fazenda Horizonte',status:'Ainda não reconhecida como RPPN',water:'Duas nascentes perenes formam o Ribeirão Horizonte, que deságua no Reservatório Municipal do Vale, usado para abastecimento público.',eco:'96% de vegetação nativa na faixa de 50 m. A área conecta dois grandes fragmentos e mantém vegetação contínua ao longo do ribeirão.',psa:'Há risco de incêndio e entrada de animais. Existe projeto para cercamento, recuperação de 1 ha, prevenção e monitoramento; parte importante depende do PSA.'}
 ];
-const store="psa_simple_v1_";
-const slides=[...document.querySelectorAll(".slide")];
-let current=0;
-let predictionConfirmed=localStorage.getItem(store+"confirmed")==="1";
-
-function showSlide(i){
-  if(i>4 && !predictionConfirmed){
-    i=4;
-    document.getElementById("predictionMsg").textContent="Confirme a suposição da turma antes de revelar os critérios.";
-    document.getElementById("predictionMsg").className="message locked";
-  }
-  current=Math.max(0,Math.min(slides.length-1,i));
-  slides.forEach((s,j)=>s.classList.toggle("active",j===current));
-  document.getElementById("counter").textContent=`${current+1} / ${slides.length}`;
-  if(current===10) refreshComparison();
+const prefix='psa_detalhado_v3_'; const slides=[...document.querySelectorAll('.slide')]; let current=0; let confirmed=localStorage.getItem(prefix+'confirmed')==='1';
+function showSlide(i){const predictionIndex=slides.findIndex(sl=>sl.querySelector('#pred1'));const comparisonIndex=slides.findIndex(sl=>sl.querySelector('#predsummary'));if(i>predictionIndex&&!confirmed){i=predictionIndex;document.getElementById('predmsg').textContent='Confirme a suposição antes de revelar os critérios.';document.getElementById('predmsg').className='msg bad'}current=Math.max(0,Math.min(slides.length-1,i));slides.forEach((sl,j)=>sl.classList.toggle('active',j===current));document.getElementById('counter').textContent=`${current+1} / ${slides.length}`;if(current===comparisonIndex)compare()}
+function nextSlide(){showSlide(current+1)}function prevSlide(){showSlide(current-1)}
+document.addEventListener('keydown',e=>{if(['SELECT','INPUT'].includes(document.activeElement.tagName))return;if(e.key==='ArrowRight'||e.key==='PageDown')nextSlide();if(e.key==='ArrowLeft'||e.key==='PageUp')prevSlide()});
+function toggleFull(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+function fill(id){const e=document.getElementById(id);e.innerHTML='<option value="">Selecione</option>'+candidates.map(c=>`<option>${c}</option>`).join('');e.value=localStorage.getItem(prefix+id)||'';e.addEventListener('change',()=>{localStorage.setItem(prefix+id,e.value);if(confirmed){confirmed=false;localStorage.setItem(prefix+'confirmed','0');document.getElementById('predmsg').textContent='A suposição foi alterada. Confirme novamente.';document.getElementById('predmsg').className='msg'}})}['pred1','pred2','pred3'].forEach(fill);
+function confirmPrediction(){const v=['pred1','pred2','pred3'].map(id=>document.getElementById(id).value);if(v.some(x=>!x)||new Set(v).size!==3){document.getElementById('predmsg').textContent='Escolha três candidaturas diferentes.';document.getElementById('predmsg').className='msg bad';return}confirmed=true;localStorage.setItem(prefix+'confirmed','1');document.getElementById('predmsg').textContent='Suposição registrada. Os critérios agora podem ser revelados.';document.getElementById('predmsg').className='msg ok'}
+const ct=document.getElementById('candtabs');candidates.forEach((c,i)=>{const b=document.createElement('button');b.textContent=i+1;b.title=c;b.onclick=()=>{document.getElementById('candname').textContent=c;[...ct.children].forEach((x,j)=>x.classList.toggle('active',j===i));resetTimer()};if(i===0)b.classList.add('active');ct.appendChild(b)});
+let sec=180,timer=null;function draw(){document.getElementById('clock').textContent=`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`}function startTimer(){if(timer)return;timer=setInterval(()=>{if(sec>0){sec--;draw()}else pauseTimer()},1000)}function pauseTimer(){clearInterval(timer);timer=null}function resetTimer(){pauseTimer();sec=180;draw()}
+function eligSelect(i){return `<select id="elig_${i}"><option value="">—</option><option>Sim</option><option>Não</option></select>`}function scoreSelect(p,i){return `<select id="${p}_${i}"><option value="">—</option><option>0</option><option>1</option><option>2</option></select>`}
+candidates.forEach((c,i)=>{let tr=document.createElement('tr');tr.innerHTML=`<td><strong>${c}</strong></td><td>${eligSelect(i)}</td><td id="stat_${i}">—</td>`;document.getElementById('eligbody').appendChild(tr);let sr=document.createElement('tr');sr.innerHTML=`<td><strong>${c}</strong></td><td>${scoreSelect('water',i)}</td><td>${scoreSelect('eco',i)}</td><td>${scoreSelect('add',i)}</td><td id="tot_${i}" class="total">—</td>`;document.getElementById('scorebody').appendChild(sr)});
+candidates.forEach((c,i)=>['elig','water','eco','add'].forEach(p=>{const e=document.getElementById(`${p}_${i}`),s=localStorage.getItem(prefix+`${p}_${i}`);if(s!==null)e.value=s;e.addEventListener('change',()=>{localStorage.setItem(prefix+`${p}_${i}`,e.value);update()})}));
+function update(){candidates.forEach((c,i)=>{const el=document.getElementById(`elig_${i}`).value,st=document.getElementById(`stat_${i}`);st.textContent=el==='Sim'?'Habilitada':el==='Não'?'Inabilitada':'—';st.className=el==='Sim'?'status-ok':el==='Não'?'status-no':'';['water','eco','add'].forEach(p=>document.getElementById(`${p}_${i}`).disabled=el!=='Sim');const v=['water','eco','add'].map(p=>document.getElementById(`${p}_${i}`).value);document.getElementById(`tot_${i}`).textContent=el==='Sim'&&v.every(x=>x!=='')?v.reduce((a,x)=>a+Number(x),0):'—'});renderRanking()}
+function data(){let a=[];candidates.forEach((c,i)=>{if(document.getElementById(`elig_${i}`).value!=='Sim')return;const w=document.getElementById(`water_${i}`).value,e=document.getElementById(`eco_${i}`).value,d=document.getElementById(`add_${i}`).value;if([w,e,d].some(x=>x===''))return;a.push({name:c,w:+w,e:+e,d:+d,total:+w + +e + +d})});return a.sort((x,y)=>y.total-x.total||y.w-x.w||y.e-x.e||x.name.localeCompare(y.name))}
+function renderRanking(){const a=data(),box=document.getElementById('ranking');box.innerHTML=a.length?a.map((r,i)=>`<div class="rankrow"><div class="place">${i+1}º</div><div><strong>${r.name}</strong><div class="note">Água ${r.w} · Ecológico ${r.e} · Adicionalidade ${r.d}</div></div><div class="pts">${r.total} pts</div><div class="rankstatus ${i<3?'status-ok':''}">${i<3?'Selecionada':'Não selecionada'}</div></div>`).join(''):'<p>O ranking aparecerá após a pontuação.</p>'}
+function showSubtab(which){
+ document.getElementById('scorePane').classList.toggle('active',which==='score');
+ document.getElementById('criteriaPane').classList.toggle('active',which==='criteria');
+ document.getElementById('filesPane').classList.toggle('active',which==='files');
+ document.getElementById('tabScoreBtn').classList.toggle('active',which==='score');
+ document.getElementById('tabCritBtn').classList.toggle('active',which==='criteria');
+ document.getElementById('tabFilesBtn').classList.toggle('active',which==='files');
 }
-function nextSlide(){showSlide(current+1)}
-function prevSlide(){showSlide(current-1)}
-document.addEventListener("keydown",e=>{
-  if(["SELECT","INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
-  if(e.key==="ArrowRight"||e.key==="PageDown")nextSlide();
-  if(e.key==="ArrowLeft"||e.key==="PageUp")prevSlide();
-});
-function toggleFullscreen(){
-  if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();
-  else document.exitFullscreen?.();
+function renderProposalNav(){
+ const nav=document.getElementById('proposalNav');
+ nav.innerHTML=proposalFacts.map((p,i)=>`<button id="pf_${i}" onclick="showProposal(${i})">${i+1}. ${p.short}</button>`).join('');
+ showProposal(0);
 }
-
-function fillSelect(el, blank=true){
-  el.innerHTML=(blank?'<option value="">Selecione</option>':'')+
-    candidates.map(c=>`<option>${c}</option>`).join("");
+function showProposal(i){
+ const p=proposalFacts[i];
+ proposalFacts.forEach((_,j)=>document.getElementById(`pf_${j}`)?.classList.toggle('active',j===i));
+ document.getElementById('proposalCard').innerHTML=`<div class="proposalhead"><div><div class="note">FICHA ${i+1} DE 7</div><h3>${p.name}</h3></div><div class="statuspill">${p.status}</div></div><div class="factgrid"><div class="fact"><div class="facttitle">Água e beneficiários</div><p>${p.water}</p></div><div class="fact"><div class="facttitle">Conservação e conectividade</div><p>${p.eco}</p></div><div class="fact" style="grid-column:1/-1"><div class="facttitle">Problema, ação e dependência do PSA</div><p>${p.psa}</p></div></div>`;
 }
-["pred1","pred2","pred3"].forEach(id=>fillSelect(document.getElementById(id)));
-
-function savePred(){
-  ["pred1","pred2","pred3"].forEach(id=>localStorage.setItem(store+id,document.getElementById(id).value));
-}
-["pred1","pred2","pred3"].forEach(id=>{
-  const el=document.getElementById(id);
-  el.value=localStorage.getItem(store+id)||"";
-  el.addEventListener("change",()=>{
-    savePred();
-    if(predictionConfirmed){
-      predictionConfirmed=false;
-      localStorage.setItem(store+"confirmed","0");
-      document.getElementById("predictionMsg").textContent="A seleção foi alterada. Confirme novamente.";
-      document.getElementById("predictionMsg").className="message";
-    }
-  });
-});
-function confirmPrediction(){
-  const vals=["pred1","pred2","pred3"].map(id=>document.getElementById(id).value);
-  if(vals.some(v=>!v)||new Set(vals).size!==3){
-    document.getElementById("predictionMsg").textContent="Escolha três candidaturas diferentes.";
-    document.getElementById("predictionMsg").className="message locked";
-    return;
-  }
-  predictionConfirmed=true;
-  localStorage.setItem(store+"confirmed","1");
-  savePred();
-  document.getElementById("predictionMsg").textContent="Suposição registrada. Os critérios agora podem ser revelados.";
-  document.getElementById("predictionMsg").className="message ok";
-}
-
-const tabs=document.getElementById("tabs");
-let currentCandidate=0;
-candidates.forEach((c,i)=>{
-  const b=document.createElement("button");
-  b.textContent=i+1;b.title=c;b.onclick=()=>{
-    currentCandidate=i;
-    document.getElementById("candidateName").textContent=c;
-    [...tabs.children].forEach((x,j)=>x.classList.toggle("active",j===i));
-    resetTimer();
-  };
-  if(i===0)b.classList.add("active");
-  tabs.appendChild(b);
-});
-
-let sec=180,timer=null;
-function drawClock(){
-  document.getElementById("clock").textContent=
-    `${String(Math.floor(sec/60)).padStart(2,"0")}:${String(sec%60).padStart(2,"0")}`;
-}
-function startTimer(){
-  if(timer)return;
-  timer=setInterval(()=>{if(sec>0){sec--;drawClock()}else pauseTimer()},1000);
-}
-function pauseTimer(){clearInterval(timer);timer=null}
-function resetTimer(){pauseTimer();sec=180;drawClock()}
-
-function eligSelect(i){
-  return `<select id="elig_${i}"><option value="">—</option><option value="Sim">Sim</option><option value="Não">Não</option></select>`;
-}
-function scoreSelect(prefix,i){
-  return `<select id="${prefix}_${i}"><option value="">—</option><option>0</option><option>1</option><option>2</option></select>`;
-}
-candidates.forEach((c,i)=>{
-  const tr=document.createElement("tr");
-  tr.innerHTML=`<td><strong>${c}</strong></td><td>${eligSelect(i)}</td><td id="estatus_${i}">—</td>`;
-  document.getElementById("eligBody").appendChild(tr);
-  const sr=document.createElement("tr");
-  sr.innerHTML=`<td><strong>${c}</strong></td><td>${scoreSelect("water",i)}</td><td>${scoreSelect("eco",i)}</td><td>${scoreSelect("gain",i)}</td><td id="total_${i}" class="total">—</td>`;
-  document.getElementById("scoreBody").appendChild(sr);
-});
-candidates.forEach((c,i)=>{
-  ["elig","water","eco","gain"].forEach(p=>{
-    const el=document.getElementById(`${p}_${i}`);
-    const saved=localStorage.getItem(store+`${p}_${i}`);
-    if(saved!==null)el.value=saved;
-    el.addEventListener("change",()=>{
-      localStorage.setItem(store+`${p}_${i}`,el.value);
-      updateData();
-    });
-  });
-});
-
-function updateData(){
-  candidates.forEach((c,i)=>{
-    const elig=document.getElementById(`elig_${i}`).value;
-    const stat=document.getElementById(`estatus_${i}`);
-    stat.textContent=elig==="Sim"?"Habilitada":elig==="Não"?"Inabilitada":"—";
-    stat.className=elig==="Sim"?"status-ok":elig==="Não"?"status-no":"";
-    ["water","eco","gain"].forEach(p=>document.getElementById(`${p}_${i}`).disabled=elig!=="Sim");
-    const vals=["water","eco","gain"].map(p=>document.getElementById(`${p}_${i}`).value);
-    document.getElementById(`total_${i}`).textContent=
-      elig==="Sim" && vals.every(v=>v!=="") ? vals.reduce((a,v)=>a+Number(v),0) : "—";
-  });
-  renderRanking();
-}
-function rankingData(){
-  const arr=[];
-  candidates.forEach((c,i)=>{
-    const elig=document.getElementById(`elig_${i}`).value;
-    const w=document.getElementById(`water_${i}`).value;
-    const e=document.getElementById(`eco_${i}`).value;
-    const g=document.getElementById(`gain_${i}`).value;
-    if(elig==="Sim" && w!=="" && e!=="" && g!==""){
-      arr.push({name:c,w:+w,e:+e,g:+g,total:+w + +e + +g});
-    }
-  });
-  return arr.sort((a,b)=>b.total-a.total||b.w-a.w||b.e-a.e||a.name.localeCompare(b.name));
-}
-function renderRanking(){
-  const arr=rankingData();
-  const box=document.getElementById("ranking");
-  if(!arr.length){box.innerHTML="<p>O ranking aparecerá após o preenchimento das notas.</p>";return}
-  box.innerHTML=arr.map((r,i)=>`
-    <div class="rankrow">
-      <div class="place">${i+1}º</div>
-      <div><strong>${r.name}</strong><div class="note">Água ${r.w} · Ecológico ${r.e} · Ganho PSA ${r.g}</div></div>
-      <div class="pts">${r.total} pts</div>
-      <div class="rankstatus ${i<3?"status-ok":""}">${i<3?"Selecionada":"Não selecionada"}</div>
-    </div>`).join("");
-}
-function refreshComparison(){
-  const pred=["pred1","pred2","pred3"].map(id=>document.getElementById(id).value);
-  document.getElementById("predictionSummary").innerHTML=
-    pred.map((x,i)=>`<p><strong>${i+1}º</strong> ${x||"—"}</p>`).join("");
-  const arr=rankingData().slice(0,3);
-  document.getElementById("technicalSummary").innerHTML=
-    arr.length?arr.map((x,i)=>`<p><strong>${i+1}º</strong> ${x.name} — ${x.total} pontos</p>`).join("")
-    :"<p>Complete a pontuação para gerar o resultado.</p>";
-}
-function clearData(){
-  if(!confirm("Apagar a suposição e todas as pontuações?"))return;
-  Object.keys(localStorage).filter(k=>k.startsWith(store)).forEach(k=>localStorage.removeItem(k));
-  predictionConfirmed=false;
-  ["pred1","pred2","pred3"].forEach(id=>document.getElementById(id).value="");
-  candidates.forEach((c,i)=>{
-    ["elig","water","eco","gain"].forEach(p=>document.getElementById(`${p}_${i}`).value="");
-  });
-  document.getElementById("predictionMsg").textContent="Selecione três candidaturas diferentes.";
-  document.getElementById("predictionMsg").className="message";
-  updateData();
-}
-updateData();
-drawClock();
-showSlide(0);
-if(predictionConfirmed){
-  document.getElementById("predictionMsg").textContent="Suposição já registrada. Os critérios podem ser revelados.";
-  document.getElementById("predictionMsg").className="message ok";
-}
+function compare(){const p=['pred1','pred2','pred3'].map(id=>document.getElementById(id).value);document.getElementById('predsummary').innerHTML=p.map((x,i)=>`<p><strong>${i+1}º</strong> ${x||'—'}</p>`).join('');const a=data().slice(0,3);document.getElementById('techsummary').innerHTML=a.length?a.map((x,i)=>`<p><strong>${i+1}º</strong> ${x.name} - ${x.total} pontos</p>`).join(''):'<p>Complete a pontuação para gerar o resultado.</p>'}
+function clearData(){if(!confirm('Apagar a suposição e todas as pontuações?'))return;Object.keys(localStorage).filter(k=>k.startsWith(prefix)).forEach(k=>localStorage.removeItem(k));confirmed=false;['pred1','pred2','pred3'].forEach(id=>document.getElementById(id).value='');candidates.forEach((c,i)=>['elig','water','eco','add'].forEach(p=>document.getElementById(`${p}_${i}`).value=''));document.getElementById('predmsg').textContent='Selecione três candidaturas diferentes.';document.getElementById('predmsg').className='msg';update()}
+if(confirmed){document.getElementById('predmsg').textContent='Suposição já registrada. Os critérios podem ser revelados.';document.getElementById('predmsg').className='msg ok'}renderProposalNav();update();draw();showSlide(0);
 </script>
 </body>
 </html>
